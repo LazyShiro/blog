@@ -9,9 +9,9 @@ use think\App;
 
 class Article extends Controller
 {
-	protected string $newsItemTable = 'DataNewsItem';
+	protected $newsItemTable = 'DataNewsItem';
 
-	protected CommonService $commonService;
+	protected $commonService;
 
 	public function __construct(App $app)
 	{

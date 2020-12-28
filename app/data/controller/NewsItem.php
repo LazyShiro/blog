@@ -22,9 +22,9 @@ class NewsItem extends Controller
 	 *
 	 * @var string
 	 */
-	private string $table             = 'DataNewsItem';
-	private string $newsRelationTable = 'dataNewsRelation';
-	private string $newsItemTable     = 'dataNewsItem';
+	private $table             = 'DataNewsItem';
+	private $newsRelationTable = 'dataNewsRelation';
+	private $newsItemTable     = 'dataNewsItem';
 
 	/**
 	 * 文章内容管理

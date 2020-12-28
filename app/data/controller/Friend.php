@@ -21,7 +21,7 @@ class Friend extends Controller
 	 *
 	 * @var string
 	 */
-	private string $table = 'DataFriend';
+	private $table = 'DataFriend';
 
 	/**
 	 * 友情链接管理

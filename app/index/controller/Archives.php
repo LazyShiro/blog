@@ -9,9 +9,9 @@ use think\App;
 
 class Archives extends Controller
 {
-	protected string $newsTable = 'DataNewsItem';
+	protected $newsTable = 'DataNewsItem';
 
-	protected CommonService $commonService;
+	protected $commonService;
 
 	public function __construct(App $app)
 	{

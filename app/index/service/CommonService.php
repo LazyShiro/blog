@@ -6,10 +6,10 @@ use Exception;
 
 class CommonService
 {
-	protected string $userTable         = 'SystemUser';
-	protected string $newsTable         = 'DataNewsItem';
-	protected string $newsCategoryTable = 'DataNewsCategory';
-	protected string $newsMarkTable     = 'DataNewsMark';
+	protected $userTable         = 'SystemUser';
+	protected $newsTable         = 'DataNewsItem';
+	protected $newsCategoryTable = 'DataNewsCategory';
+	protected $newsMarkTable     = 'DataNewsMark';
 
 	public function getBaseInfo($object)
 	{

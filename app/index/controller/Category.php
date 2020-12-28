@@ -9,10 +9,10 @@ use think\App;
 
 class Category extends Controller
 {
-	protected string $newsCategoryTable = 'DataNewsCategory';
-	protected string $newsTable         = 'DataNewsItem';
+	protected $newsCategoryTable = 'DataNewsCategory';
+	protected $newsTable         = 'DataNewsItem';
 
-	protected CommonService $commonService;
+	protected $commonService;
 
 	public function __construct(App $app)
 	{

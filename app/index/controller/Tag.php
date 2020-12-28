@@ -9,10 +9,10 @@ use think\App;
 
 class Tag extends Controller
 {
-	protected string $newsTagTable = 'DataNewsMark';
-	protected string $newsTable    = 'DataNewsItem';
+	protected $newsTagTable = 'DataNewsMark';
+	protected $newsTable    = 'DataNewsItem';
 
-	protected CommonService $commonService;
+	protected $commonService;
 
 	public function __construct(App $app)
 	{

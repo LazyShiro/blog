@@ -17,9 +17,9 @@ use think\db\exception\ModelNotFoundException;
  */
 class Index extends Controller
 {
-	protected string $newsTable = 'DataNewsItem';
+	protected $newsTable = 'DataNewsItem';
 
-	protected CommonService $userService;
+	protected $userService;
 
 	public function __construct(App $app)
 	{
