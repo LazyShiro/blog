@@ -1,0 +1,75 @@
+{include file="common/header" /}
+<body itemscope itemtype="http://schema.org/WebPage">
+<div id="loading">
+	<div class="cat">
+		<div class="body"></div>
+		<div class="head">
+			<div class="face"></div>
+		</div>
+		<div class="foot">
+			<div class="tummy-end"></div>
+			<div class="bottom"></div>
+			<div class="legs left"></div>
+			<div class="legs right"></div>
+		</div>
+		<div class="paw">
+			<div class="hands left"></div>
+			<div class="hands right"></div>
+		</div>
+	</div>
+</div>
+<div id="container">
+	<header id="header" itemscope itemtype="http://schema.org/WPHeader">
+		<div class="inner">
+			<div id="brand">
+				<div class="pjax">
+					<h1 itemprop="name headline">分类于"{$news_category_info.name}"的文章</h1>
+				</div>
+			</div>
+			{include file="common/nav" /}
+		</div>
+		<div id="imgs" class="pjax">
+			<ul>
+				<li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipevuctzzj20zk0m84qp.jpg"></li>
+				<li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipexj2jgzj20zk0m8b09.jpg"></li>
+				<li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipevgoki5j20zk0m84qp.jpg"></li>
+				<li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicitf0kl1j20zk0m87fe.jpg"></li>
+				<li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giclj61ylzj20zk0m8b29.jpg"></li>
+				<li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giciub8ja1j20zk0m81ky.jpg"></li>
+			</ul>
+		</div>
+	</header>
+	{include file="common/wave" /}
+	<main>
+		<div class="inner">
+			<div id="main" class="pjax">
+				<div class="collapse wrap">
+					<h2 class="item header">
+						<a href="/category">全部</a>
+						<small>/</small>
+						{$news_category_info.name}
+						<small>( {$news_all_count} )</small>
+					</h2>
+					{foreach $news_list as $value}
+					<article class="item normal" itemscope itemtype>
+						<div class="meta">
+							<time itemprop="dateCreated" datetime="{$value.create_at}" content="{$value.year}-{$value.month}-{$value.day}">{$value.month}-{$value.day}</time>
+						</div>
+						<div class="title">
+							<a href="/{$value.id}" itemprop="url">
+								<span itemprop="name">{$value.name}</span>
+							</a>
+						</div>
+					</article>
+					{/foreach}
+				</div>
+			</div>
+			{include file="common/sidebar" /}
+			<div class="dimmer"></div>
+		</div>
+	</main>
+	{include file="common/footer" /}
+</div>
+{include file="common/js" /}
+</body>
+</html>

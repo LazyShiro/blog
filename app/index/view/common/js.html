@@ -1,0 +1,28 @@
+<script data-config type="text/javascript">
+	let LOCAL = {
+		path: "gallery-post/", favicon: {
+			show: "这货杀了个回马枪！",
+			hide: "终于走了，休息一下！"
+		},
+		search: {
+			placeholder: "文章搜索",
+			empty: "关于 「 ${query} 」，什么也没搜到",
+			stats: "${time} ms 内找到 ${hits} 条结果"
+		},
+		valine: !0,
+		fancybox: !0,
+		copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+		ignores: [
+			function (e) {
+				return e.includes("#")
+			},
+			function (e) {
+				return new RegExp(LOCAL.path + "$").test(e)
+			}
+		]
+	}
+</script>
+<script src="/static/index/js/polyfill.js"></script>
+<script src="/static/index/js/quicklink.umd.js"></script>
+<script src="/static/index/js/app.js?v=0.2.5"></script>
+<script src="/static/index/js/jquery-3.5.1.min.js"></script>

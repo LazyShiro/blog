@@ -1,0 +1,60 @@
+{extend name="../../admin/view/main"}
+{block name='content'}
+<div class="think-box-shadow table-block">
+	{include file='friend/index_search'}
+	<table class="layui-table margin-top-10" lay-skin="line">
+		{notempty name='list'}
+		<thead>
+		<tr>
+			<th class="text-center nowrap">网站名称</th>
+			<th class="text-center nowrap">拥有者</th>
+			<th class="text-center nowrap">链接</th>
+			<th class="text-center nowrap">描述</th>
+			<th class="text-center nowrap">标志</th>
+			<th class="text-center nowrap">色号</th>
+			<th class="text-center nowrap">申请时间</th>
+			<th class="text-center nowrap">状态</th>
+			<th class="text-center nowrap">操作</th>
+		</tr>
+		</thead>
+		{/notempty}
+		<tbody>
+		{foreach $list as $key=>$vo}
+		<tr>
+			<td class="text-center nowrap">{$vo.site|default=''}</td>
+			<td class="text-center nowrap">{$vo.owner|default=''}</td>
+			<td class="text-center nowrap">
+				<a href="{$vo.url|default=''}" target="_blank">{$vo.url|default=''}</a>
+			</td>
+			<td class="text-center nowrap">{$vo.desc|default=''}</td>
+			<td class="text-center nowrap">
+				<a href="{$vo.image|default=''}" target="_blank">{$vo.image|default=''}</a>
+			</td>
+			<td class="text-center nowrap" style="color: #{$vo.color|default=''};">{$vo.color|default=''}</td>
+			<td class="text-center nowrap">{$vo.createtime|format_datetime}</td>
+			<td class="text-center nowrap">
+				{if $vo.status eq 0}
+				<span class="color-blue">待审核</span>
+				{elseif $vo.status eq 1}
+				<span class="color-green">已通过</span>
+				{elseif $vo.status eq 2}
+				<span class="color-red">已拒绝</span>
+				{/if}
+			</td>
+			<td class='text-center nowrap'>
+				{if auth("state") and $vo.status eq 0}
+				<a class="layui-btn layui-btn-sm layui-btn-safe" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">通 过</a>
+				<a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('state')}" data-value="id#{$vo.id};status#2">拒 绝</a>
+				{else}
+				<a class="layui-btn layui-btn-sm layui-btn-danger" data-action="{:url('state')}" data-value="id#{$vo.id};status#0">取 消</a>
+				{/if}
+			</td>
+		</tr>
+		{/foreach}
+		</tbody>
+	</table>
+	{empty name='list'}
+	<span class="notdata">没有记录哦</span>
+	{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

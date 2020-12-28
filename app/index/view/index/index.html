@@ -1,0 +1,162 @@
+{include file="common/header" /}
+<body itemscope itemtype>
+<div id="loading">
+	<div class="cat">
+		<div class="body"></div>
+		<div class="head">
+			<div class="face"></div>
+		</div>
+		<div class="foot">
+			<div class="tummy-end"></div>
+			<div class="bottom"></div>
+			<div class="legs left"></div>
+			<div class="legs right"></div>
+		</div>
+		<div class="paw">
+			<div class="hands left"></div>
+			<div class="hands right"></div>
+		</div>
+	</div>
+</div>
+<div id="container">
+	<header id="header" itemscope itemtype>
+		<div class="inner">
+			<div id="brand">
+				<div class="pjax">
+					<a href="/" class="logo" rel="start">
+						<p class="artboard">{:sysconf('site_name')}</p>
+						<h1 itemprop="name headline" class="title">{:sysconf('site_main_title')}</h1>
+					</a>
+					<p class="meta" itemprop="description">{:sysconf('site_sub_title')}</p>
+				</div>
+			</div>
+			{include file="common/nav" /}
+		</div>
+		<div id="imgs" class="pjax">
+			<ul>
+				<li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicis3attqj20zk0m8k7l.jpg"></li>
+				<li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipew8gmvyj20zk0m87wh.jpg"></li>
+				<li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipexbei4hj20zk0m8npd.jpg"></li>
+				<li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gipeyhsblkj20zk0m81kx.jpg"></li>
+				<li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1gicitf0kl1j20zk0m87fe.jpg"></li>
+				<li class="item" data-background-image="https://tva1.sinaimg.cn/large/6833939bly1giciuja1j1j20zk0m8kjl.jpg"></li>
+			</ul>
+		</div>
+	</header>
+	{include file="common/wave" /}
+	<main>
+		<div class="inner">
+			<div id="main" class="pjax">
+				<div class="index wrap">
+					<!--					<h2 class="divider">置顶文章</h2>-->
+					<!--					<div class="segments sticky">-->
+					<!--						<article class="item">-->
+					<!--							<div class="cover">-->
+					<!--								<a href="/computer-science/note/theme-shoka-doc/" itemprop="url" title="Hexo主题Shoka &amp; multi-markdown-it渲染器使用说明">-->
+					<!--									<img data-src="https://tva1.sinaimg.cn/mw690/6833939bly1gipex2cdtbj20zk0m8x6p.jpg">-->
+					<!--								</a>-->
+					<!--							</div>-->
+					<!--							<div class="info">-->
+					<!--								<div class="meta">-->
+					<!--									<span class="item" title="创建时间：2020-08-13 20:45:48"><span class="icon"><i class="ic i-calendar"></i> </span><time itemprop="dateCreated datePublished" datetime="2020-08-13T20:45:48+08:00">2020-08-13</time> </span>-->
+					<!--									<span class="item" title="本文字数"><span class="icon"><i class="ic i-pen"></i> </span><span>2k</span> <span class="text">字</span> </span>-->
+					<!--									<span class="item" title="阅读时长"><span class="icon"><i class="ic i-clock"></i> </span><span>2 分钟</span></span>-->
+					<!--								</div>-->
+					<!--								<h3>-->
+					<!--									<a href="/computer-science/note/theme-shoka-doc/" itemprop="url" title="Hexo主题Shoka &amp; multi-markdown-it渲染器使用说明">Hexo主题Shoka & multi-markdown-it渲染器使用说明</a>-->
+					<!--								</h3>-->
+					<!--								<div class="excerpt">跳票 N 久终于更新的简单的使用说明 hexo-theme-shoka ：本博客自用的主题 hexo-renderer-multi-markdown-it：配套的 markdown 渲染器 已经支持 hexo 5。。。本文档和 bug 不定期更新中。 如果有什么功能需求，欢迎留言。 当前版本更新至 0.2.5，更新记录点此 🚀快速开始 - 💌依赖插件 - 📌基本配置 - 🌈界面显示 - 🦄特殊功能 # 设计缘由 前几年在 Bear 和 Evernote 上整理了大量笔记，非常喜欢 Bear 默认的 markdown 渲染样式。 后来因为换了安卓手机，用不了...</div>-->
+					<!--								<div class="meta footer">-->
+					<!--									<span><a href="/categories/computer-science/note/theme-shoka-doc/" itemprop="url" title="Theme Shoka Documentation"><i class="ic i-flag"></i>Theme Shoka Documentation</a></span>-->
+					<!--								</div>-->
+					<!--								<a href="/computer-science/note/theme-shoka-doc/" itemprop="url" title="Hexo主题Shoka &amp; multi-markdown-it渲染器使用说明" class="btn">more...</a>-->
+					<!--							</div>-->
+					<!--						</article>-->
+					<!--					</div>-->
+					<!--					<h2 class="divider">精选分类</h2>-->
+					<!--					<div class="cards">-->
+					<!--						<section class="item">-->
+					<!--							<div class="cover" data-background-image="/static/index/images/cover1.jpg">-->
+					<!--								<h2 class="title">二进制杂谈</h2>-->
+					<!--								<span>计算机科学</span>-->
+					<!--							</div>-->
+					<!--							<div class="info">-->
+					<!--								<div class="ribbon">-->
+					<!--									<a href="/categories/computer-science/note/" itemprop="url" title="二进制杂谈">二进制杂谈</a>-->
+					<!--								</div>-->
+					<!--								<div class="inner">-->
+					<!--									<ul class="posts">-->
+					<!--										<li>-->
+					<!--											<a title="Theme Shoka Documentation" href="/categories/computer-science/note/theme-shoka-doc/">Theme Shoka Documentation</a>-->
+					<!--										</li>-->
+					<!--									</ul>-->
+					<!--									<div class="meta footer">-->
+					<!--										<span><a href="/categories/computer-science/" itemprop="url" title="计算机科学"><i class="ic i-flag"></i>计算机科学</a> </span>-->
+					<!--										<span><i class="ic i-file"></i>1 个子项，5 篇文章</span>-->
+					<!--									</div>-->
+					<!--									<a href="/categories/computer-science/note/" itemprop="url" title="二进制杂谈" class="btn">more...</a>-->
+					<!--								</div>-->
+					<!--							</div>-->
+					<!--						</section>-->
+					<!--						<section class="item">-->
+					<!--							<div class="cover" data-background-image="/static/index/images/cover2.jpg">-->
+					<!--								<h2 class="title">零基础学Java语言-浙江大学-翁恺</h2>-->
+					<!--								<span>计算机科学</span>-->
+					<!--							</div>-->
+					<!--							<div class="info">-->
+					<!--								<div class="ribbon">-->
+					<!--									<a href="/categories/computer-science/java/course-1/" itemprop="url" title="零基础学Java语言-浙江大学-翁恺">零基础学Java语言-浙江大学-翁恺</a>-->
+					<!--								</div>-->
+					<!--								<div class="inner">-->
+					<!--									<ul class="posts">-->
+					<!--										<li>-->
+					<!--											<a title="第1周 计算" href="/computer-science/java/course-1/week-1/">第1周 计算</a>-->
+					<!--										</li>-->
+					<!--										<li>-->
+					<!--											<a title="第2周 判断" href="/computer-science/java/course-1/week-2/">第2周 判断</a>-->
+					<!--										</li>-->
+					<!--									</ul>-->
+					<!--									<div class="meta footer">-->
+					<!--										<span><a href="/categories/computer-science/" itemprop="url" title="计算机科学"><i class="ic i-flag"></i>计算机科学</a> </span>-->
+					<!--										<span><i class="ic i-file"></i>2 篇文章</span>-->
+					<!--									</div>-->
+					<!--									<a href="/categories/computer-science/java/course-1/" itemprop="url" title="零基础学Java语言-浙江大学-翁恺" class="btn">more...</a>-->
+					<!--								</div>-->
+					<!--							</div>-->
+					<!--						</section>-->
+					<!--					</div>-->
+					<h2 class="divider">文章列表</h2>
+					<div class="segments posts">
+						{foreach $news_list as $key => $value}
+						<article class="item">
+							<div class="cover">
+								<a href="/{$value.id}" itemprop="url" title="{$value.name}">
+									<img data-src="{$value.cover}">
+								</a>
+							</div>
+							<div class="info">
+								<div class="meta">
+									<span class="item" title="创建时间：{$value.create_at}"><span class="icon"><i class="ic i-calendar"></i> </span><time itemprop="dateCreated datePublished" datetime="{$value.create_at}">{$value.year}-{$value.month}-{$value.day}</time> </span>
+									<span class="item" title="本文字数"><span class="icon"><i class="ic i-pen"></i> </span><span>{$value.word_number}</span> <span class="text">字</span> </span>
+									<span class="item" title="阅读时长"><span class="icon"><i class="ic i-clock"></i> </span><span>{$value.read_time}</span></span>
+								</div>
+								<h3>
+									<a href="/{$value.id}" itemprop="url" title="{$value.name}">{$value.name}</a>
+								</h3>
+								<div class="excerpt"></div>
+								<a href="/{$value.id}" itemprop="url" title="{$value.name}" class="btn">more...</a>
+							</div>
+						</article>
+						{/foreach}
+					</div>
+				</div>
+			</div>
+			{include file="common/sidebar" /}
+			<div class="dimmer"></div>
+		</div>
+	</main>
+	{include file="common/footer" /}
+</div>
+{include file="common/js" /}
+</body>
+</html>

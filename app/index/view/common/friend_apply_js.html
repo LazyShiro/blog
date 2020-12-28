@@ -1,0 +1,51 @@
+<script>
+	jQuery("#form .friend_form_button input").on('click', function () {
+		let nodeList = jQuery("#form .friend_form_input input"), verify = true;
+
+		nodeList.each(function (k, v) {
+			let value = v.value, placeholder = v.placeholder;
+			if (value === null || value === "null" || value === undefined || value === "undefined" || value === "") {
+				let t = w.createChild("div", {innerHTML: placeholder, className: "tip"});
+				setTimeout(function () {
+					t.addClass("hide");
+					setTimeout(function () {
+						w.removeChild(t)
+					}, 300)
+				}, 3e3);
+				nodeList[k].focus();
+				verify = false;
+				return verify;
+			}
+		})
+
+		if (verify === true) {
+			let site = nodeList[0].value,
+					owner = nodeList[1].value,
+					url = nodeList[2].value,
+					desc = nodeList[3].value,
+					image = nodeList[4].value,
+					color = nodeList[5].value,
+					list = {site: site, owner: owner, url: url, desc: desc, image: image, color: color};
+
+			jQuery.ajax({
+				url: "{:url('/friend/apply', [], false)}",
+				data: JSON.stringify(list),
+				contentType: "application/json",
+				type: "POST",
+				dataType: "json",
+				success: function (data) {
+					if (data.status === 1) {
+						let t = w.createChild("div", {innerHTML: "我已收到来自 " + owner + "  的请求，请稍候...", className: "tip"});
+						setTimeout(function () {
+							t.addClass("hide");
+							setTimeout(function () {
+								w.removeChild(t)
+							}, 300)
+						}, 3e3);
+						jQuery("#form")[0].reset();
+					}
+				}
+			});
+		}
+	})
+</script>
