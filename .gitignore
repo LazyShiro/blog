@@ -1,3 +1,5 @@
 .idea
 .env
 runtime
+.user.ini
+upload

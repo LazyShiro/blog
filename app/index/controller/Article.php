@@ -28,6 +28,10 @@ class Article extends Controller
 		}
 
 		try {
+			if (empty((request()->header('cache-control')))) {
+				$this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $id]])->inc('num_read')->update();
+			}
+
 			$newsInfo = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $id]])->field('id,name,cover,content,num_like,num_read,num_collect,num_comment,create_at,update_at')->find();
 
 			$newsPrev = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '<', $id - 1]])->order(['id' => 'desc'])->field('id,name,cover,remark')->find();

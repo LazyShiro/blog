@@ -90,7 +90,7 @@
 							<div id="copyright">
 								<ul>
 									<li class="author">
-										<strong>本文作者： </strong>{$user_info.nickname} <i class="ic i-at"><em>@</em></i>Hexo
+										<strong>本文作者： </strong>{$user_info.nickname} <i class="ic i-at"><em>@</em></i> {:sysconf('site_name')}
 									</li>
 									<li class="link">
 										<strong>本文链接：</strong> <a href="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/{$news_info.id}" title="{$news_info.name}">{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/{$news_info.id}</a>

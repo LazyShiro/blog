@@ -2,10 +2,12 @@
 	<div class="inner">
 		<div class="status">
 			<div class="copyright">
+				{if !empty(sysconf('site_copy'))} {:sysconf('site_copy')} {else}
 				&copy; 2020 –
 				<span itemprop="copyrightYear">{:date('Y')}</span>
 				<span class="with-love"><i class="ic i-star rotate"></i> </span>
 				<span class="author" itemprop="copyrightHolder">{$user_info.nickname}</span>
+				{/if}
 			</div>
 			<div class="powered-by">
 				theme-source
