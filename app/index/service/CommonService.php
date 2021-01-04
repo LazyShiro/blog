@@ -10,11 +10,13 @@ class CommonService
 	protected $newsTable         = 'DataNewsItem';
 	protected $newsCategoryTable = 'DataNewsCategory';
 	protected $newsMarkTable     = 'DataNewsMark';
+	protected $pictureTable      = 'DataPictureItem';
 
 	public function getBaseInfo($object)
 	{
 		try {
-			$userInfo = $object->app->db->name($this->userTable)->where([['id', '=', 10000]])->field('nickname,headimg,contact_qq,contact_mail,contact_phone,describe,extra')->find();
+			$userInfo    = $object->app->db->name($this->userTable)->where([['id', '=', 10000]])->field('nickname,headimg,contact_qq,contact_mail,contact_phone,describe,extra')->find();
+			$pictureList = $object->app->db->name($this->pictureTable)->where([['status', '=', 1], ['deleted', '=', 0]])->field('url')->orderRand()->limit(10)->select();
 		} catch (Exception $exception) {
 			exit('在维护，懒得写页面了');
 		}
@@ -36,6 +38,7 @@ class CommonService
 		}
 
 		$object->assign('user_info', $userInfo);
+		$object->assign('picture_list', $pictureList);
 		$object->assign('news_count', $newsCount);
 		$object->assign('news_category_count', $newsCategoryCount);
 		$object->assign('news_mark_count', $newsMarkCount);

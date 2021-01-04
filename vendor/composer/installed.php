@@ -6,11 +6,20 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'eb82e35e99d82d6b1c19ca8b95599d75b7782b9e',
+    'reference' => 'f078a600b81574a824c8f09b642e366e657f1efa',
     'name' => 'zoujingli/thinkadmin',
   ),
   'versions' => 
   array (
+    'algolia/algoliasearch-client-php' => 
+    array (
+      'pretty_version' => '2.7.3',
+      'version' => '2.7.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '142a382e4649db0cb64d9eb8893872f1a4ba8dd3',
+    ),
     'endroid/qr-code' => 
     array (
       'pretty_version' => '1.9.3',
@@ -64,6 +73,15 @@
       array (
       ),
       'reference' => 'b7ce3b176482dbbc1245ebf52b181af44c2cf55f',
+    ),
+    'psr/http-message' => 
+    array (
+      'pretty_version' => '1.0.1',
+      'version' => '1.0.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f6561bf28d520154e4b0ec72be95418abe6d9363',
     ),
     'psr/log' => 
     array (
@@ -163,7 +181,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'eb82e35e99d82d6b1c19ca8b95599d75b7782b9e',
+      'reference' => 'f078a600b81574a824c8f09b642e366e657f1efa',
     ),
     'zoujingli/wechat-developer' => 
     array (

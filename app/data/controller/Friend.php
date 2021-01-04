@@ -2,11 +2,7 @@
 
 namespace app\data\controller;
 
-use app\data\enum\NewsTagEnum;
-use app\data\service\NewsService;
-use Exception;
 use think\admin\Controller;
-use think\admin\extend\CodeExtend;
 
 /**
  * 友情链接管理

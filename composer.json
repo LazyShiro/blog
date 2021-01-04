@@ -29,7 +29,8 @@
     "topthink/think-view": "^1.0",
     "zoujingli/ip2region": "^1.0",
     "zoujingli/think-library": "6.0.x-dev",
-    "zoujingli/wechat-developer": "^1.2"
+    "zoujingli/wechat-developer": "^1.2",
+    "algolia/algoliasearch-client-php": "^2.7"
   },
   "autoload": {
     "psr-0": {

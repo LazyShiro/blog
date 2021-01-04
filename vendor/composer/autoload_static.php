@@ -8,6 +8,8 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
+        '979dffec6fa5205cabd2c2cd1e9e6b3a' => __DIR__ . '/..' . '/algolia/algoliasearch-client-php/src/Http/Psr7/functions.php',
+        '6783aef8c489bbc166eee2536fe605d5' => __DIR__ . '/..' . '/algolia/algoliasearch-client-php/src/functions.php',
         '8dafcc6956460bc297e00381fed53e11' => __DIR__ . '/..' . '/zoujingli/think-library/src/common.php',
     );
 
@@ -36,6 +38,7 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         array (
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
+            'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
         ),
@@ -52,6 +55,7 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'A' => 
         array (
             'AliPay\\' => 7,
+            'Algolia\\AlgoliaSearch\\' => 22,
         ),
     );
 
@@ -99,6 +103,10 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
@@ -126,6 +134,10 @@ class ComposerStaticInit4f89fd0e0503ccf740f2fa5757825d7b
         'AliPay\\' => 
         array (
             0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay',
+        ),
+        'Algolia\\AlgoliaSearch\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/algolia/algoliasearch-client-php/src',
         ),
     );
 

@@ -1,0 +1,54 @@
+{extend name="../../admin/view/main"}
+
+{block name='content'}
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+	<div class="layui-card-body padding-40">
+		<div class="layui-form-item relative block">
+			<span class="color-green font-w7 label-required-prev">图片分类</span>
+			<span class="color-desc margin-left-5">Category Name</span>
+			<div class="markbox layui-textarea">
+				{foreach $category as $item}{if isset($vo.category) && is_array($vo.category) && in_array($item.id, $vo.category)}
+				<label class="think-checkbox notselect">
+					<input checked type="checkbox" name="category[]" value="{$item.id}" lay-ignore>
+					{$item.name}
+				</label>
+				{else}
+				<label class="think-checkbox notselect">
+					<input type="checkbox" name="category[]" value="{$item.id}" lay-ignore>
+					{$item.name}
+				</label>
+				{/if}{/foreach}
+			</div>
+		</div>
+		<div class="layui-form-item relative block">
+			<span class="color-green font-w7 label-required-prev">图片地址</span>
+			<span class="color-desc margin-left-5">Conver Image</span>
+			<label class="relative block label-required-null">
+				<input required name="url" value='{$vo.url|default=""}' placeholder="请上传图片&nbsp;&nbsp;&nbsp;&nbsp;" class="layui-input">
+				<a data-file data-type="png,jpg,gif" data-field="url" class="input-right-icon layui-icon layui-icon-upload"></a>
+				<script>$('[name="url"]').uploadOneImage()</script>
+			</label>
+		</div>
+		<label class="layui-form-item relative block">
+			<span class="color-green font-w7">图片名称</span>
+			<span class="color-desc margin-left-5">Picture Name</span>
+			<input name="name" value='{$vo.name|default=""}' placeholder="请输入图片名称" class="layui-input">
+		</label>
+
+		<div class="hr-line-dashed"></div>
+		{notempty name='vo.id'}
+		<input type='hidden' value='{$vo.id}' name='id'>
+		{/notempty}
+
+		<div class="layui-form-item text-center">
+			<button type="submit" class="layui-btn">保存数据</button>
+			<button type='button' class="layui-btn layui-btn-danger" data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+		</div>
+	</div>
+	<script>
+		require(['ckeditor'], function () {
+			window.createEditor('[name=content]', {height: 300});
+		});
+	</script>
+</form>
+{/block}

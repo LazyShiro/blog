@@ -3,11 +3,11 @@
 namespace app\data\controller;
 
 use app\data\enum\NewsTagEnum;
+use app\data\service\AlgoliaService;
 use app\data\service\NewsService;
 use Exception;
 use think\admin\Controller;
 use think\admin\extend\CodeExtend;
-use think\db\exception\DbException;
 
 /**
  * 文章内容管理
@@ -24,16 +24,13 @@ class NewsItem extends Controller
 	 */
 	private $table             = 'DataNewsItem';
 	private $newsRelationTable = 'dataNewsRelation';
-	private $newsItemTable     = 'dataNewsItem';
 
 	/**
 	 * 文章内容管理
 	 *
 	 * @auth true
 	 * @menu true
-	 * @throws \think\db\exception\DataNotFoundException
-	 * @throws \think\db\exception\DbException
-	 * @throws \think\db\exception\ModelNotFoundException
+	 * @throws Exception
 	 */
 	public function index()
 	{
@@ -47,9 +44,7 @@ class NewsItem extends Controller
 	 * 文章内容选择器
 	 *
 	 * @login true
-	 * @throws \think\db\exception\DataNotFoundException
-	 * @throws \think\db\exception\DbException
-	 * @throws \think\db\exception\ModelNotFoundException
+	 * @throws Exception
 	 */
 	public function select()
 	{
@@ -72,9 +67,7 @@ class NewsItem extends Controller
 	 * 添加文章内容
 	 *
 	 * @auth true
-	 * @throws \think\db\exception\DataNotFoundException
-	 * @throws \think\db\exception\DbException
-	 * @throws \think\db\exception\ModelNotFoundException
+	 * @throws Exception
 	 */
 	public function add()
 	{
@@ -86,9 +79,7 @@ class NewsItem extends Controller
 	 * 编辑文章内容
 	 *
 	 * @auth true
-	 * @throws \think\db\exception\DataNotFoundException
-	 * @throws \think\db\exception\DbException
-	 * @throws \think\db\exception\ModelNotFoundException
+	 * @throws Exception
 	 */
 	public function edit()
 	{
@@ -101,9 +92,7 @@ class NewsItem extends Controller
 	 *
 	 * @param array $data
 	 *
-	 * @throws \think\db\exception\DataNotFoundException
-	 * @throws \think\db\exception\DbException
-	 * @throws \think\db\exception\ModelNotFoundException
+	 * @throws Exception
 	 */
 	protected function _form_filter(array &$data)
 	{
@@ -167,6 +156,8 @@ class NewsItem extends Controller
 		//新增文章关系
 		$this->app->db->name($this->newsRelationTable)->insertAll($relationData);
 
+		AlgoliaService::uploadNews($data['code'], $data['name'], $newsItemId);
+
 		if ($state) {
 			$this->success('文章内容保存成功！', 'javascript:history.back()');
 		}
@@ -176,7 +167,7 @@ class NewsItem extends Controller
 	 * 修改文章状态
 	 *
 	 * @auth true
-	 * @throws \think\db\exception\DbException
+	 * @throws Exception
 	 */
 	public function state()
 	{
@@ -186,15 +177,40 @@ class NewsItem extends Controller
 		]));
 	}
 
+	public function _save_result()
+	{
+		$id = $this->request->param('id');
+
+		try {
+			$newsItemInfo = $this->app->db->name($this->table)->where([['id', '=', $id]])->find();
+			if ($newsItemInfo['status'] === 0) {
+				AlgoliaService::deleteNews($newsItemInfo['code']);
+			} else {
+				AlgoliaService::uploadNews($newsItemInfo['code'], $newsItemInfo['name'], $newsItemInfo['id']);
+			}
+		} catch (Exception $exception) {
+		}
+	}
+
 	/**
 	 * 删除文章内容
 	 *
 	 * @auth true
-	 * @throws \think\db\exception\DbException
+	 * @throws Exception
 	 */
 	public function remove()
 	{
 		$this->_delete($this->table);
 	}
 
+	public function _delete_result()
+	{
+		$id = $this->request->param('id');
+
+		try {
+			$newsItemInfo = $this->app->db->name($this->table)->where([['id', '=', $id]])->find();
+			AlgoliaService::deleteNews($newsItemInfo['code']);
+		} catch (Exception $exception) {
+		}
+	}
 }

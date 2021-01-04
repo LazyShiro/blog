@@ -19,9 +19,9 @@
 			<span class="color-desc margin-left-5">Category Name</span>
 			<div class="markbox layui-textarea">
 				{foreach $category as $item}{if isset($vo.category) && is_array($vo.category) && in_array($item.id, $vo.category)}
-				<label class="think-checkbox notselect"><input checked type="checkbox" name="category[]" value="{$item.id}" lay-ignore> {$item.name}</label>
+				<label class="think-checkbox notselect"><input checked type="radio" name="category[]" value="{$item.id}" lay-ignore> {$item.name}</label>
 				{else}
-				<label class="think-checkbox notselect"><input type="checkbox" name="category[]" value="{$item.id}" lay-ignore> {$item.name}</label>
+				<label class="think-checkbox notselect"><input type="radio" name="category[]" value="{$item.id}" lay-ignore> {$item.name}</label>
 				{/if}{/foreach}
 			</div>
 		</div>

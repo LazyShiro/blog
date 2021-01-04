@@ -1720,8 +1720,8 @@ textarea {
 }
 @font-face {
   font-family: 'ic';
-  src: url("//at.alicdn.com/t/font_1832207_c8i9n1ulxlt.eot");
-  src: url("//at.alicdn.com/t/font_1832207_c8i9n1ulxlt.eot?#iefix") format('embedded-opentype'), url("//at.alicdn.com/t/font_1832207_c8i9n1ulxlt.woff2") format('woff2'), url("//at.alicdn.com/t/font_1832207_c8i9n1ulxlt.woff") format('woff'), url("//at.alicdn.com/t/font_1832207_c8i9n1ulxlt.ttf") format('truetype'), url("//at.alicdn.com/t/font_1832207_c8i9n1ulxlt.svg#ic") format('svg');
+  src: url("/static/index/font/font_1832207_c8i9n1ulxlt.eot");
+  src: url("/static/index/font/font_1832207_c8i9n1ulxlt.eot?#iefix") format('embedded-opentype'), url("/static/index/font/font_1832207_c8i9n1ulxlt.woff2") format('woff2'), url("/static/index/font/font_1832207_c8i9n1ulxlt.woff") format('woff'), url("/static/index/font/font_1832207_c8i9n1ulxlt.ttf") format('truetype'), url("/static/index/font/font_1832207_c8i9n1ulxlt.svg#ic") format('svg');
 }
 .ic {
   font-family: "ic" !important;
@@ -4238,7 +4238,7 @@ main >.inner {
 .page .notfound {
   width: 18.75rem;
   height: 22.625rem;
-  background: url("../images/404.png") no-repeat center bottom;
+  background: url("../images/404.jpg") no-repeat center bottom;
   text-align: center;
   margin: 6.25rem auto;
 }
@@ -4845,7 +4845,7 @@ main >.inner {
 }
 .algolia-powered {
   float: right;
-  background: url("../images/algolia_logo.svg") no-repeat;
+  background: url("/static/index/font/algolia_logo.svg") no-repeat;
   display: inline-block;
   height: 1.125rem;
   width: 4.25rem;
