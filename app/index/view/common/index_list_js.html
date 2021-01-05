@@ -1,0 +1,67 @@
+<script>
+	jQuery(function () {
+		let hitMe = true;
+		jQuery(window).scroll(function () {
+			let scrollTop = jQuery(this).scrollTop(),
+					scrollHeight = jQuery(document).height(),
+					windowHeight = jQuery(this).height(),
+					page = parseInt(jQuery('#main').attr('data-page')) + 1,
+					html = '';
+			if ((scrollHeight - scrollTop - windowHeight) < 1000 && hitMe === true) {
+				hitMe = false;
+				jQuery.ajax({
+					url: "{:url('/article/list', [], false)}",
+					data: JSON.stringify({page: page}),
+					contentType: "application/json",
+					type: "POST",
+					dataType: "json",
+					success: function (data) {
+						if (data.status === 1 && data.data.length > 0) {
+							$.each(data.data, function (index, value) {
+								html += '' +
+										'<article class="item show">' +
+										'	<div class="cover">' +
+										'		<a href="/' + value.id + '" itemprop="url" title="' + value.name + '">' +
+										'			<img data-src="' + value.cover + '">' +
+										'		</a>' +
+										'	</div>' +
+										'	<div class="info">' +
+										'		<div class="meta">' +
+										'			<span class="item" title="创建时间：' + value.create_at + '">' +
+										'				<span class="icon">' +
+										'					<i class="ic i-calendar"></i>' +
+										'				</span>' +
+										'				<time itemprop="dateCreated datePublished" datetime="' + value.create_at + '">' + value.year + '-' + value.month + '-' + value.day + '</time>' +
+										'			</span>' +
+										'			<span class="item" title="本文字数">' +
+										'				<span class="icon">' +
+										'					<i class="ic i-pen"></i>' +
+										'				</span>' +
+										'				<span>' + value.word_number + '</span>' +
+										'				<span class="text">字</span>' +
+										'			</span>' +
+										'			<span class="item" title="阅读时长">' +
+										'				<span class="icon">' +
+										'					<i class="ic i-clock"></i>' +
+										'				</span>' +
+										'				<span>' + value.read_time + '</span>' +
+										'			</span>' +
+										'		</div>' +
+										'		<h3>' +
+										'			<a href="/' + value.id + '" itemprop="url" title="' + value.name + '">' + value.name + '</a>' +
+										'		</h3>' +
+										'		<div class="excerpt"></div>' +
+										'		<a href="/' + value.id + '" itemprop="url" title="' + value.name + '" class="btn">more...</a>' +
+										'	</div>' +
+										'</article>';
+							});
+							jQuery('.segments.posts').append(html);
+							jQuery('#main').attr('data-page', page++);
+							hitMe = true;
+						}
+					}
+				});
+			}
+		})
+	})
+</script>

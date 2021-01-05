@@ -44,7 +44,9 @@ class Category extends Controller
 
 	public function search()
 	{
-		$id = param('category');
+		$id    = param('category');
+		$page  = param('page', 1);
+		$limit = param('limit', 10);
 
 		if (empty($id) || (int) $id === 0) {
 			exit('在维护');
@@ -53,7 +55,7 @@ class Category extends Controller
 		$condition = ",{$id},";
 		try {
 			$newsCategoryInfo = $this->app->db->name($this->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $id]])->field('id,name')->find();
-			$newsList         = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['category', 'like', "%{$condition}%"]])->field('id,name,create_at')->order(['sort' => 'desc', 'id' => 'desc'])->limit(10)->select()->toArray();
+			$newsList         = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['category', 'like', "%{$condition}%"]])->field('id,name,create_at')->order(['sort' => 'desc', 'id' => 'desc'])->limit(getOffset($page, $limit), $limit)->select()->toArray();
 			$newsAllCount     = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['category', 'like', "%{$condition}%"]])->count();
 		} catch (Exception $exception) {
 			exit('在维护');
@@ -67,11 +69,19 @@ class Category extends Controller
 			$value['day']   = substr($value['create_at'], 8, 2);
 		}
 
+		$totalPage = ceil($newsAllCount / $limit);
+
 		$this->assign('title', "分类：{$newsCategoryInfo['name']} | ");
 		$this->assign('news_category_info', $newsCategoryInfo);
 		$this->assign('news_list', $newsList);
 		$this->assign('news_all_count', $newsAllCount);
 
+		$this->assign('category', $id);
+		$this->assign('prev_page', ($page - 1));
+		$this->assign('current_page', $page);
+		$this->assign('next_page', ($page + 1));
+		$this->assign('total_page', $totalPage);
+		$this->assign('list_page', getPageList($page, $totalPage));
 		$this->fetch();
 	}
 }

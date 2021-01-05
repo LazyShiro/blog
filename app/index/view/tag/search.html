@@ -23,7 +23,7 @@
 		<div class="inner">
 			<div id="brand">
 				<div class="pjax">
-					<h1 itemprop="name headline">分类于"{$news_category_info.name}"的文章</h1>
+					<h1 itemprop="name headline">包含标签"{$news_mark_info.name}"的文章</h1>
 				</div>
 			</div>
 			{include file="common/nav" /}
@@ -38,19 +38,20 @@
 			<div id="main" class="pjax">
 				<div class="collapse wrap">
 					<h2 class="item header">
-						<a href="/category">全部</a>
+						<a href="/tag">全部</a>
 						<small>/</small>
-						{$news_category_info.name}
-						<small>( {$news_all_count} )</small>
+						{$news_mark_info.name}
+						<small>标签</small>
 					</h2>
-					{foreach $news_list as $value}
+					{foreach $news_list as $item}
 					<article class="item normal" itemscope itemtype>
 						<div class="meta">
-							<time itemprop="dateCreated" datetime="{$value.create_at}" content="{$value.year}-{$value.month}-{$value.day}">{$value.month}-{$value.day}</time>
+							<time itemprop="dateCreated" datetime="{$item.create_at}" content="{$item.year}-{$item.month}-{$item.day}">{$item.year}-{$item.month}-{$item.day}</time>
+							<span><a href="/category/{$item.category_id}">{$item.category_name}</a></span>
 						</div>
 						<div class="title">
-							<a href="/{$value.id}" itemprop="url">
-								<span itemprop="name">{$value.name}</span>
+							<a href="/{$item.id}" itemprop="url">
+								<span itemprop="name">{$item.name}</span>
 							</a>
 						</div>
 					</article>
@@ -59,15 +60,15 @@
 				<nav class="pagination">
 					<div class="inner">
 						{if $current_page > 1}
-						<a class="extend prev" rel="prev" href="/category/{$category}/{$prev_page}" data-pjax-state="">
+						<a class="extend prev" rel="prev" href="/tag/{$tag}/{$prev_page}" data-pjax-state="">
 							<i class="ic i-angle-left" aria-label="上一页"></i>
 						</a>
 						{/if} {foreach $list_page as $page} {if $page eq $current_page}
 						<span class="page-number current">{$page}</span>
 						{else}
-						<a class="page-number" href="/category/{$category}/{$page}" data-pjax-state="">{$page}</a>
+						<a class="page-number" href="/tag/{$tag}/{$page}" data-pjax-state="">{$page}</a>
 						{/if} {/foreach} {if $current_page < $total_page}
-						<a class="extend next" rel="next" href="/category/{$category}/{$next_page}" data-pjax-state="">
+						<a class="extend next" rel="next" href="/tag/{$tag}/{$next_page}" data-pjax-state="">
 							<i class="ic i-angle-right" aria-label="下一页"></i>
 						</a>
 						{/if}

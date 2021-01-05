@@ -6,11 +6,15 @@ use app\index\service\CommonService;
 use Exception;
 use think\admin\Controller;
 use think\App;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 class Tag extends Controller
 {
-	protected $newsTagTable = 'DataNewsMark';
-	protected $newsTable    = 'DataNewsItem';
+	protected $newsTable         = 'DataNewsItem';
+	protected $newsTagTable      = 'DataNewsMark';
+	protected $newsCategoryTable = 'DataNewsCategory';
 
 	protected $commonService;
 
@@ -46,7 +50,9 @@ class Tag extends Controller
 
 	public function search()
 	{
-		$id = param('tag');
+		$id    = param('tag');
+		$page  = param('page', 1);
+		$limit = param('limit', 10);
 
 		if (empty($id) || (int) $id === 0) {
 			exit('在维护');
@@ -55,7 +61,7 @@ class Tag extends Controller
 		$condition = ",{$id},";
 		try {
 			$newsTagInfo  = $this->app->db->name($this->newsTagTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $id]])->field('id,name')->find();
-			$newsList     = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['mark', 'like', "%{$condition}%"]])->field('id,name,create_at')->order(['sort' => 'desc', 'id' => 'desc'])->limit(10)->select()->toArray();
+			$newsList     = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['mark', 'like', "%{$condition}%"]])->field('id,name,category,create_at')->order(['sort' => 'desc', 'id' => 'desc'])->limit(getOffset($page, $limit), $limit)->select()->toArray();
 			$newsAllCount = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['mark', 'like', "%{$condition}%"]])->count();
 		} catch (Exception $exception) {
 			exit('在维护');
@@ -64,15 +70,32 @@ class Tag extends Controller
 		$this->commonService->getBaseInfo($this);
 
 		foreach ($newsList as &$value) {
+			$categoryId = substr($value['category'], 1, -1);
+			try {
+				$categoryInfo           = $this->app->db->name($this->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $categoryId]])->field('id,name')->find();
+				$value['category_id']   = $categoryInfo['id'];
+				$value['category_name'] = $categoryInfo['name'];
+			} catch (Exception $exception) {
+				$value['categoryId']   = '';
+				$value['categoryName'] = '';
+			}
 			$value['year']  = substr($value['create_at'], 0, 4);
 			$value['month'] = substr($value['create_at'], 5, 2);
 			$value['day']   = substr($value['create_at'], 8, 2);
 		}
 
+		$totalPage = ceil($newsAllCount / $limit);
+
 		$this->assign('title', "标签：{$newsTagInfo['name']} | ");
 		$this->assign('news_mark_info', $newsTagInfo);
 		$this->assign('news_list', $newsList);
-		$this->assign('news_all_count', $newsAllCount);
+
+		$this->assign('tag', $id);
+		$this->assign('prev_page', ($page - 1));
+		$this->assign('current_page', $page);
+		$this->assign('next_page', ($page + 1));
+		$this->assign('total_page', $totalPage);
+		$this->assign('list_page', getPageList($page, $totalPage));
 
 		$this->fetch();
 	}

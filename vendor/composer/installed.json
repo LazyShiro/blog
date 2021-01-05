@@ -1124,7 +1124,6 @@
                 "topthink/framework": "^6.0"
             },
             "time": "2020-12-26T09:53:10+00:00",
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "think": {

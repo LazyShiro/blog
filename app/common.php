@@ -136,3 +136,28 @@ function returnData($resource = [], $code = 10000)
 
 	ajaxReturn($returnData);
 }
+
+function getOffset($page, $limit)
+{
+	return ($page - 1) * $limit;
+}
+
+function getPageList($page, $max): array
+{
+	if ($page <= 2) {//名列前茅
+		$offset = 1;
+	} elseif (($max - $page) > 1) {//正常
+		$offset = $page - 2;
+	} else {
+		$offset = $page - (4 - ($max - $page));//倒数老末
+	}
+
+	$pageList = [];
+
+	for ($i = 0; $i < 5; $i++) {
+		$pageTem = $offset + $i;
+		array_push($pageList, $pageTem);
+	}
+
+	return $pageList;
+}
