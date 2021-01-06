@@ -8,9 +8,15 @@
 			<span class="color-desc margin-left-5">Mark Name</span>
 			<div class="markbox layui-textarea">
 				{foreach $mark as $tag}{if isset($vo.mark) && is_array($vo.mark) && in_array($tag.id, $vo.mark)}
-				<label class="think-checkbox notselect"><input checked type="checkbox" name="mark[]" value="{$tag.id}" lay-ignore> {$tag.name}</label>
+				<label class="think-checkbox notselect">
+					<input checked type="checkbox" name="mark[]" value="{$tag.id}" lay-ignore>
+					{$tag.name}
+				</label>
 				{else}
-				<label class="think-checkbox notselect"><input type="checkbox" name="mark[]" value="{$tag.id}" lay-ignore> {$tag.name}</label>
+				<label class="think-checkbox notselect">
+					<input type="checkbox" name="mark[]" value="{$tag.id}" lay-ignore>
+					{$tag.name}
+				</label>
 				{/if}{/foreach}
 			</div>
 		</div>
@@ -19,10 +25,37 @@
 			<span class="color-desc margin-left-5">Category Name</span>
 			<div class="markbox layui-textarea">
 				{foreach $category as $item}{if isset($vo.category) && is_array($vo.category) && in_array($item.id, $vo.category)}
-				<label class="think-checkbox notselect"><input checked type="radio" name="category[]" value="{$item.id}" lay-ignore> {$item.name}</label>
+				<label class="think-checkbox notselect">
+					<input checked type="radio" name="category[]" value="{$item.id}" lay-ignore>
+					{$item.name}
+				</label>
 				{else}
-				<label class="think-checkbox notselect"><input type="radio" name="category[]" value="{$item.id}" lay-ignore> {$item.name}</label>
+				<label class="think-checkbox notselect">
+					<input type="radio" name="category[]" value="{$item.id}" lay-ignore>
+					{$item.name}
+				</label>
 				{/if}{/foreach}
+			</div>
+		</div>
+		<div class="layui-form-item relative block">
+			<span class="color-green font-w7 label-required-prev">置顶</span>
+			<span class="color-desc margin-left-5">Top</span>
+			<div class="markbox layui-textarea">
+				<?php
+					if(isset($vo['top']) && $vo['top'] === 0){
+						[$a, $b] = ['checked', ''];
+					}else{
+						[$a, $b] = ['', 'checked'];
+					}
+				?>
+				<label class="think-checkbox notselect">
+					<input type="radio" name="top" value="0" lay-ignore {$a}>
+					不置顶
+				</label>
+				<label class="think-checkbox notselect">
+					<input type="radio" name="top" value="1" lay-ignore {$b}>
+					置顶
+				</label>
 			</div>
 		</div>
 		<div class="layui-form-item relative block">
@@ -53,8 +86,11 @@
 		</div>
 
 		<div class="hr-line-dashed"></div>
-		{notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
-		{notempty name='vo.code'}<input type='hidden' value='{$vo.code}' name='code'>{/notempty}
+		{notempty name='vo.id'}
+		<input type='hidden' value='{$vo.id}' name='id'>
+		{/notempty} {notempty name='vo.code'}
+		<input type='hidden' value='{$vo.code}' name='code'>
+		{/notempty}
 
 		<div class="layui-form-item text-center">
 			<button type="submit" class="layui-btn">保存数据</button>
