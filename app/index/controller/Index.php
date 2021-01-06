@@ -34,7 +34,7 @@ class Index extends Controller
 
 		try {
 			$newsTopList = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['top', '=', 1]])->field('id,name,category,cover,remark,content,create_at')->order(['sort' => 'desc', 'id' => 'desc'])->limit(3)->select()->toArray();
-			$newsList    = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0]])->field('id,name,cover,remark,content,create_at')->order(['sort' => 'desc', 'id' => 'desc'])->limit(10)->select()->toArray();
+			$newsList    = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['top', '=', 0]])->field('id,name,cover,remark,content,create_at')->order(['sort' => 'desc', 'id' => 'desc'])->limit(10)->select()->toArray();
 		} catch (Exception $exception) {
 			exit('在维护');
 		}
