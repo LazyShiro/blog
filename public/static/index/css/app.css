@@ -2840,7 +2840,7 @@ main > .inner {
 }
 
 #brand .artboard {
-    font-family: 'banma', 'shouxie', -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-family: 'shouxie', -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
     font-size: 3.5em;
     line-height: 1.2;
 }
@@ -2851,7 +2851,7 @@ main > .inner {
 }
 
 #brand .artboard + h1 {
-    font-family: 'banma', 'shouxie', -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-family: 'shouxie', -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
     margin: 0.625rem 0;
 }
 
@@ -6114,7 +6114,7 @@ code,
 }
 
 .code-container table {
-    white-space: pre;
+    white-space: nowrap;
     border-spacing: 0;
     width: 100%;
 }
@@ -7283,4 +7283,12 @@ span.label {
 
 .audio.playing .cover .disc {
     animation-play-state: running;
+}
+
+.zebra {
+    font-family: 'banma', serif !important;
+}
+
+.handwriting {
+    font-family: 'shouxie', serif !important;
 }
