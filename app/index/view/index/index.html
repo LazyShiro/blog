@@ -41,6 +41,7 @@
 		<div class="inner">
 			<div id="main" class="pjax" data-page="1">
 				<div class="index wrap">
+					{if count($news_top_list) > 0}
 					<h2 class="divider">置顶呓语</h2>
 					<div class="segments sticky">
 						{foreach $news_top_list as $item}
@@ -59,7 +60,7 @@
 								<h3>
 									<a href="/{$item.id}" itemprop="url" title="{$item.name}">{$item.name}</a>
 								</h3>
-								<div class="excerpt">{$item.remark}</div>
+								<div class="excerpt">{$item.remark|raw}</div>
 								<div class="meta footer">
 									<span><a href="/category/{$item.category_id}" itemprop="url" title="{$item.category_name}"><i class="ic i-flag"></i>{$item.category_name}</a></span>
 								</div>
@@ -68,6 +69,7 @@
 						</article>
 						{/foreach}
 					</div>
+					{/if}
 					<!--					<h2 class="divider">精选分类</h2>-->
 					<!--					<div class="cards">-->
 					<!--						<section class="item">-->
@@ -138,7 +140,7 @@
 								<h3>
 									<a href="/{$value.id}" itemprop="url" title="{$value.name}">{$value.name}</a>
 								</h3>
-								<div class="excerpt">{$value.remark}</div>
+								<div class="excerpt">{$value.remark|raw}</div>
 								<a href="/{$value.id}" itemprop="url" title="{$value.name}" class="btn">more...</a>
 							</div>
 						</article>
