@@ -59,7 +59,7 @@
 								<h3>
 									<a href="/{$item.id}" itemprop="url" title="{$item.name}">{$item.name}</a>
 								</h3>
-								<div class="excerpt">{$item.content|raw}</div>
+								<div class="excerpt">{$item.remark}</div>
 								<div class="meta footer">
 									<span><a href="/category/{$item.category_id}" itemprop="url" title="{$item.category_name}"><i class="ic i-flag"></i>{$item.category_name}</a></span>
 								</div>
@@ -138,7 +138,7 @@
 								<h3>
 									<a href="/{$value.id}" itemprop="url" title="{$value.name}">{$value.name}</a>
 								</h3>
-								<div class="excerpt">{$value.content|raw}</div>
+								<div class="excerpt">{$value.remark}</div>
 								<a href="/{$value.id}" itemprop="url" title="{$value.name}" class="btn">more...</a>
 							</div>
 						</article>
