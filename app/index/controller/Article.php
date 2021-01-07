@@ -47,35 +47,23 @@ class Article extends Controller
 		$newsInfo['update_date'] = substr($newsInfo['update_at'], 0, 10);
 		$newsInfo['word_number'] = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($newsInfo['content'])));
 
-		$readTime = $newsInfo['word_number'] * 1.4362842397776895593489479952362;
+		$readTime = $newsInfo['word_number'] * env('common.read_speed');
 		$readTime = $readTime > 60 ? (ceil($readTime / 60) . '分钟') : (ceil($readTime) . '秒');
 
 		$newsInfo['read_time'] = $readTime;
 
 		if (!empty($newsPrev)) {
-			$categoryId = substr($newsPrev['category'], 1, -1);
-			try {
-				$categoryInfo = $this->app->db->name($this->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $categoryId]])->field('id,name')->find();
+			$categoryInfo = getCategoryInfo($this, $newsPrev['category']);
 
-				$newsPrev['category_id']   = $categoryInfo['id'];
-				$newsPrev['category_name'] = $categoryInfo['name'];
-			} catch (Exception $exception) {
-				$newsPrev['categoryId']   = '';
-				$newsPrev['categoryName'] = '';
-			}
+			$newsPrev['category_id']   = $categoryInfo['id'];
+			$newsPrev['category_name'] = $categoryInfo['name'];
 		}
 
 		if (!empty($newsNext)) {
-			$categoryId = substr($newsNext['category'], 1, -1);
-			try {
-				$categoryInfo = $this->app->db->name($this->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $categoryId]])->field('id,name')->find();
+			$categoryInfo = getCategoryInfo($this, $newsNext['category']);
 
-				$newsNext['category_id']   = $categoryInfo['id'];
-				$newsNext['category_name'] = $categoryInfo['name'];
-			} catch (Exception $exception) {
-				$newsNext['categoryId']   = '';
-				$newsNext['categoryName'] = '';
-			}
+			$newsNext['category_id']   = $categoryInfo['id'];
+			$newsNext['category_name'] = $categoryInfo['name'];
 		}
 
 		$this->assign('title', $newsInfo['name'] . ' | ');
@@ -99,7 +87,7 @@ class Article extends Controller
 				$value['day']         = substr($value['create_at'], 8, 2);
 				$value['word_number'] = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($value['content'])));
 
-				$readTime = $value['word_number'] * 1.4362842397776895593489479952362;
+				$readTime = $value['word_number'] * env('common.read_speed');
 				$readTime = $readTime > 60 ? (ceil($readTime / 60) . '分钟') : (ceil($readTime) . '秒');
 
 				$value['read_time'] = $readTime;

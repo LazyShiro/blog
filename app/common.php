@@ -176,3 +176,24 @@ function deleteHtmlTags($tags, $string)
 	}
 	return preg_replace($preg, "", $string);
 }
+
+/**
+ * 获取分类详情
+ *
+ * @param $that
+ * @param $category
+ *
+ * @return array
+ */
+function getCategoryInfo($that, $category): array
+{
+	$categoryId = substr($category, 1, -1);
+	try {
+		$categoryInfo = $that->app->db->name($that->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $categoryId]])->field('id,name')->find();
+	} catch (Exception $exception) {
+		$categoryInfo['id']   = '';
+		$categoryInfo['name'] = '';
+	}
+
+	return $categoryInfo;
+}

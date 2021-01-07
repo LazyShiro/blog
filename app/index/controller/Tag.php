@@ -70,18 +70,13 @@ class Tag extends Controller
 		$this->commonService->getBaseInfo($this);
 
 		foreach ($newsList as &$value) {
-			$categoryId = substr($value['category'], 1, -1);
-			try {
-				$categoryInfo           = $this->app->db->name($this->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $categoryId]])->field('id,name')->find();
-				$value['category_id']   = $categoryInfo['id'];
-				$value['category_name'] = $categoryInfo['name'];
-			} catch (Exception $exception) {
-				$value['categoryId']   = '';
-				$value['categoryName'] = '';
-			}
-			$value['year']  = substr($value['create_at'], 0, 4);
-			$value['month'] = substr($value['create_at'], 5, 2);
-			$value['day']   = substr($value['create_at'], 8, 2);
+			$categoryInfo = getCategoryInfo($this, $value['category']);
+
+			$value['category_id']   = $categoryInfo['id'];
+			$value['category_name'] = $categoryInfo['name'];
+			$value['year']          = substr($value['create_at'], 0, 4);
+			$value['month']         = substr($value['create_at'], 5, 2);
+			$value['day']           = substr($value['create_at'], 8, 2);
 		}
 
 		$totalPage = ceil($newsAllCount / $limit);

@@ -40,21 +40,16 @@ class Index extends Controller
 		}
 
 		foreach ($newsTopList as &$value) {
-			$categoryId = substr($value['category'], 1, -1);
-			try {
-				$categoryInfo           = $this->app->db->name($this->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $categoryId]])->field('id,name')->find();
-				$value['category_id']   = $categoryInfo['id'];
-				$value['category_name'] = $categoryInfo['name'];
-			} catch (Exception $exception) {
-				$value['categoryId']   = '';
-				$value['categoryName'] = '';
-			}
-			$value['year']        = substr($value['create_at'], 0, 4);
-			$value['month']       = substr($value['create_at'], 5, 2);
-			$value['day']         = substr($value['create_at'], 8, 2);
-			$value['word_number'] = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($value['content'])));
+			$categoryInfo = getCategoryInfo($this, $value['category']);
 
-			$readTime = $value['word_number'] * 1.4362842397776895593489479952362;
+			$value['category_id']   = $categoryInfo['id'];
+			$value['category_name'] = $categoryInfo['name'];
+			$value['year']          = substr($value['create_at'], 0, 4);
+			$value['month']         = substr($value['create_at'], 5, 2);
+			$value['day']           = substr($value['create_at'], 8, 2);
+			$value['word_number']   = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($value['content'])));
+
+			$readTime = $value['word_number'] * env('common.read_speed');
 			$readTime = $readTime > 60 ? (ceil($readTime / 60) . '分钟') : (ceil($readTime) . '秒');
 
 			$value['read_time'] = $readTime;
@@ -62,21 +57,16 @@ class Index extends Controller
 		unset($value);
 
 		foreach ($newsList as &$value) {
-			$categoryId = substr($value['category'], 1, -1);
-			try {
-				$categoryInfo           = $this->app->db->name($this->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $categoryId]])->field('id,name')->find();
-				$value['category_id']   = $categoryInfo['id'];
-				$value['category_name'] = $categoryInfo['name'];
-			} catch (Exception $exception) {
-				$value['categoryId']   = '';
-				$value['categoryName'] = '';
-			}
-			$value['year']        = substr($value['create_at'], 0, 4);
-			$value['month']       = substr($value['create_at'], 5, 2);
-			$value['day']         = substr($value['create_at'], 8, 2);
-			$value['word_number'] = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($value['content'])));
+			$categoryInfo = getCategoryInfo($this, $value['category']);
 
-			$readTime = $value['word_number'] * 1.4362842397776895593489479952362;
+			$value['category_id']   = $categoryInfo['id'];
+			$value['category_name'] = $categoryInfo['name'];
+			$value['year']          = substr($value['create_at'], 0, 4);
+			$value['month']         = substr($value['create_at'], 5, 2);
+			$value['day']           = substr($value['create_at'], 8, 2);
+			$value['word_number']   = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($value['content'])));
+
+			$readTime = $value['word_number'] * env('common.read_speed');
 			$readTime = $readTime > 60 ? (ceil($readTime / 60) . '分钟') : (ceil($readTime) . '秒');
 
 			$value['read_time'] = $readTime;
