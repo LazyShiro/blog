@@ -152,9 +152,15 @@ function getPageList($page, $max): array
 		$offset = $page - (4 - ($max - $page));//倒数老末
 	}
 
+	if ($max >= 5) {
+		$length = 5;
+	} else {
+		$length = $max;
+	}
+
 	$pageList = [];
 
-	for ($i = 0; $i < 5; $i++) {
+	for ($i = 0; $i < $length; $i++) {
 		$pageTem = $offset + $i;
 		array_push($pageList, $pageTem);
 	}

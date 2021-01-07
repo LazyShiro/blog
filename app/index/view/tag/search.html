@@ -47,7 +47,7 @@
 					<article class="item normal" itemscope itemtype>
 						<div class="meta">
 							<time itemprop="dateCreated" datetime="{$item.create_at}" content="{$item.year}-{$item.month}-{$item.day}">{$item.year}-{$item.month}-{$item.day}</time>
-							<span><a href="/category/{$item.category_id}">{$item.category_name}</a></span>
+							<span><a href="/category/{$item.category_id}">{$item.category_name|raw}</a></span>
 						</div>
 						<div class="title">
 							<a href="/{$item.id}" itemprop="url">

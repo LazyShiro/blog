@@ -45,7 +45,7 @@
 					{foreach $news_category_list as $value}
 					<div>
 						<h2 class="item header">
-							<a itemprop="url" href="/category/{$value.id}">{$value.name}</a>
+							<a itemprop="url" href="/category/{$value.id}">{$value.name|raw}</a>
 							<small>( {$value.news_count} )</small>
 						</h2>
 					</div>

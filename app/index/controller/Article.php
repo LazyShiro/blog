@@ -9,7 +9,8 @@ use think\App;
 
 class Article extends Controller
 {
-	protected $newsItemTable = 'DataNewsItem';
+	protected $newsItemTable     = 'DataNewsItem';
+	protected $newsCategoryTable = 'DataNewsCategory';
 
 	protected $commonService;
 
@@ -34,8 +35,8 @@ class Article extends Controller
 
 			$newsInfo = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $id]])->field('id,name,cover,content,num_like,num_read,num_collect,num_comment,create_at,update_at')->find();
 
-			$newsPrev = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '<', $id]])->order(['id' => 'desc'])->field('id,name,cover,remark')->find();
-			$newsNext = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '>', $id]])->order(['id' => 'asc'])->field('id,name,cover,remark')->find();
+			$newsPrev = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '<', $id]])->order(['id' => 'desc'])->field('id,name,category,cover')->find();
+			$newsNext = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '>', $id]])->order(['id' => 'asc'])->field('id,name,category,cover')->find();
 		} catch (Exception $exception) {
 			exit('在维护');
 		}
@@ -50,6 +51,32 @@ class Article extends Controller
 		$readTime = $readTime > 60 ? (ceil($readTime / 60) . '分钟') : (ceil($readTime) . '秒');
 
 		$newsInfo['read_time'] = $readTime;
+
+		if (!empty($newsPrev)) {
+			$categoryId = substr($newsPrev['category'], 1, -1);
+			try {
+				$categoryInfo = $this->app->db->name($this->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $categoryId]])->field('id,name')->find();
+
+				$newsPrev['category_id']   = $categoryInfo['id'];
+				$newsPrev['category_name'] = $categoryInfo['name'];
+			} catch (Exception $exception) {
+				$newsPrev['categoryId']   = '';
+				$newsPrev['categoryName'] = '';
+			}
+		}
+
+		if (!empty($newsNext)) {
+			$categoryId = substr($newsNext['category'], 1, -1);
+			try {
+				$categoryInfo = $this->app->db->name($this->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $categoryId]])->field('id,name')->find();
+
+				$newsNext['category_id']   = $categoryInfo['id'];
+				$newsNext['category_name'] = $categoryInfo['name'];
+			} catch (Exception $exception) {
+				$newsNext['categoryId']   = '';
+				$newsNext['categoryName'] = '';
+			}
+		}
 
 		$this->assign('title', $newsInfo['name'] . ' | ');
 		$this->assign('news_info', $newsInfo);

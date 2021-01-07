@@ -23,7 +23,7 @@
 		<div class="inner">
 			<div id="brand">
 				<div class="pjax">
-					<h1 itemprop="name headline">分类于"{$news_category_info.name}"的文章</h1>
+					<h1 itemprop="name headline">分类于"{$news_category_info.name|raw}"的文章</h1>
 				</div>
 			</div>
 			{include file="common/nav" /}
@@ -40,7 +40,7 @@
 					<h2 class="item header">
 						<a href="/category">全部</a>
 						<small>/</small>
-						{$news_category_info.name}
+						{$news_category_info.name|raw}
 						<small>( {$news_all_count} )</small>
 					</h2>
 					{foreach $news_list as $value}

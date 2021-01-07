@@ -56,7 +56,7 @@
 				<br>
 			</td>
 			<td class="text-left nowrap">{notempty name='vo.category'}{foreach $vo.category as $item}
-				<span data-tips-text="分类" class="margin-right-5 layui-badge layui-bg-cyan">{$item.name}</span>
+				<span data-tips-text="分类" class="margin-right-5 layui-badge layui-bg-cyan">{$item.name|raw}</span>
 				{/foreach}{/notempty}
 				<br>
 			</td>

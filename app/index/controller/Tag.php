@@ -35,7 +35,7 @@ class Tag extends Controller
 		}
 
 		foreach ($newsTagList as $key => &$value) {
-			$newsCount = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['mark', 'like', ",{$value['id']},"]])->count();
+			$newsCount = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['mark', 'like', "%,{$value['id']},%"]])->count();
 
 			$value['news_count'] = $newsCount;
 			$value['font_size']  = rand(16, 22);

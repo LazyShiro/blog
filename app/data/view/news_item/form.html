@@ -27,12 +27,12 @@
 				{foreach $category as $item}{if isset($vo.category) && is_array($vo.category) && in_array($item.id, $vo.category)}
 				<label class="think-checkbox notselect">
 					<input checked type="radio" name="category[]" value="{$item.id}" lay-ignore>
-					{$item.name}
+					{$item.name|raw}
 				</label>
 				{else}
 				<label class="think-checkbox notselect">
 					<input type="radio" name="category[]" value="{$item.id}" lay-ignore>
-					{$item.name}
+					{$item.name|raw}
 				</label>
 				{/if}{/foreach}
 			</div>
