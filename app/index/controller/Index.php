@@ -34,7 +34,7 @@ class Index extends Controller
 
 		try {
 			$newsTopList = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['top', '=', 1]])->field('id,name,category,cover,remark,content,create_at')->order(['sort' => 'desc', 'id' => 'desc'])->limit(3)->select()->toArray();
-			$newsList    = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['top', '=', 0]])->field('id,name,cover,remark,content,create_at')->order(['sort' => 'desc', 'id' => 'desc'])->limit(10)->select()->toArray();
+			$newsList    = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['top', '=', 0]])->field('id,name,category,cover,remark,content,create_at')->order(['sort' => 'desc', 'id' => 'desc'])->limit(10)->select()->toArray();
 		} catch (Exception $exception) {
 			exit('在维护');
 		}
@@ -62,6 +62,15 @@ class Index extends Controller
 		unset($value);
 
 		foreach ($newsList as &$value) {
+			$categoryId = substr($value['category'], 1, -1);
+			try {
+				$categoryInfo           = $this->app->db->name($this->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $categoryId]])->field('id,name')->find();
+				$value['category_id']   = $categoryInfo['id'];
+				$value['category_name'] = $categoryInfo['name'];
+			} catch (Exception $exception) {
+				$value['categoryId']   = '';
+				$value['categoryName'] = '';
+			}
 			$value['year']        = substr($value['create_at'], 0, 4);
 			$value['month']       = substr($value['create_at'], 5, 2);
 			$value['day']         = substr($value['create_at'], 8, 2);
