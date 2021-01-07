@@ -7292,3 +7292,8 @@ span.label {
 .handwriting {
     font-family: 'shouxie', serif !important;
 }
+
+del {
+    background-color: #000000;
+    opacity: 0.09;
+}
