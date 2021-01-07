@@ -167,3 +167,12 @@ function getPageList($page, $max): array
 
 	return $pageList;
 }
+
+function deleteHtmlTags($tags, $string)
+{
+	$preg = [];
+	foreach ($tags as $key => $value) {
+		$preg[$key] = "/<(" . $value . ".*?)>(.*?)<(\/" . $value . ".*?)>/si";
+	}
+	return preg_replace($preg, "", $string);
+}

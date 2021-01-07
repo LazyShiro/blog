@@ -71,7 +71,7 @@ class Category extends Controller
 
 		$totalPage = ceil($newsAllCount / $limit);
 
-		$this->assign('title', "分类：{$newsCategoryInfo['name']} | ");
+		$this->assign('title', "分类：" . deleteHtmlTags(['del'], $newsCategoryInfo['name']) . " | ");
 		$this->assign('news_category_info', $newsCategoryInfo);
 		$this->assign('news_list', $newsList);
 		$this->assign('news_all_count', $newsAllCount);

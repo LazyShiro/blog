@@ -1,6 +1,7 @@
 <script data-config type="text/javascript">
 	let LOCAL = {
-		path: "gallery-post/", favicon: {
+		path: "{if isset($news_info['id'])}{$news_info.id}{/if}",
+		favicon: {
 			show: "这货杀了个回马枪！",
 			hide: "终于走了，休息一下！"
 		},
