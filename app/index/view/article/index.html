@@ -130,7 +130,7 @@
 						{if !empty($news_prev)}
 						<a href="/{$news_prev.id}" itemprop="url" rel="prev" data-background-image="{$news_prev.cover}" title="{$news_prev.name}">
 							<span class="type">上一篇</span>
-							<span class="category"><i class="ic i-flag"></i> {$news_prev.category_name}</span>
+							<span class="category"><i class="ic i-flag"></i> {$news_prev.category_name|raw}</span>
 							<h3>{$news_prev.name}</h3>
 						</a>
 						{else}
@@ -145,7 +145,7 @@
 						{if !empty($news_next)}
 						<a href="/{$news_next.id}" itemprop="url" rel="next" data-background-image="{$news_next.cover}" title="{$news_next.name}">
 							<span class="type">下一篇</span>
-							<span class="category"><i class="ic i-flag"></i> {$news_next.category_name}</span>
+							<span class="category"><i class="ic i-flag"></i> {$news_next.category_name|raw}</span>
 							<h3>{$news_next.name}</h3>
 						</a>
 						{else}
