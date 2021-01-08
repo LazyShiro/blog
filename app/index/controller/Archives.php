@@ -24,12 +24,12 @@ class Archives extends Controller
 		try {
 			$newsList = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0]])->field('create_at')->order(['id' => 'desc'])->select()->toArray();
 		} catch (Exception $exception) {
-			exit('在维护');
+			exit('在维护，懒得写页面了4');
 		}
 
 		foreach ($newsList as $key => &$value) {
-			$value['year']  = substr($value['create_at'], 0, 4);
-			$value['month'] = substr($value['create_at'], 5, 2);
+			$value['year']  = getYear($value['create_at']);
+			$value['month'] = getMonth($value['create_at']);
 		}
 		unset($value);
 
@@ -59,22 +59,22 @@ class Archives extends Controller
 		$month = param('month');
 
 		if (empty($year) || (int) $year === 0) {
-			exit('在维护');
+			exit('在维护，懒得写页面了5');
 		}
 
 		$condition = $year . ($month ? '-' . $month : '');
 		try {
 			$newsList = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['create_at', 'like', "{$condition}%"]])->field('id,name,create_at')->order(['id' => 'desc'])->limit(10)->select()->toArray();
 		} catch (Exception $exception) {
-			exit('在维护');
+			exit('在维护，懒得写页面了6');
 		}
 
 		$this->commonService->getBaseInfo($this);
 
 		foreach ($newsList as &$value) {
-			$value['year']  = substr($value['create_at'], 0, 4);
-			$value['month'] = substr($value['create_at'], 5, 2);
-			$value['day']   = substr($value['create_at'], 8, 2);
+			$value['year']  = getYear($value['create_at']);
+			$value['month'] = getMonth($value['create_at']);
+			$value['day']   = getDay($value['create_at']);
 		}
 
 		$this->assign('title', $year . " 年" . (!empty($month) ? " / {$month} 月" : '') . " - 归档 | ");

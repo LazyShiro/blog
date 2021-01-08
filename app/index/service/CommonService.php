@@ -18,7 +18,7 @@ class CommonService
 			$userInfo    = $object->app->db->name($this->userTable)->where([['id', '=', 10000]])->field('nickname,headimg,contact_qq,contact_mail,contact_phone,describe,extra')->find();
 			$pictureList = $object->app->db->name($this->pictureTable)->where([['status', '=', 1], ['deleted', '=', 0]])->field('url')->orderRand()->limit(10)->select();
 		} catch (Exception $exception) {
-			exit('在维护，懒得写页面了');
+			exit('在维护，懒得写页面了1');
 		}
 
 		$newsCount         = $object->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0]])->count();

@@ -36,7 +36,7 @@ class Index extends Controller
 			$newsTopList = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['top', '=', 1]])->field('id,name,category,cover,remark,content,create_at')->order(['sort' => 'desc', 'id' => 'desc'])->limit(3)->select()->toArray();
 			$newsList    = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['top', '=', 0]])->field('id,name,category,cover,remark,content,create_at')->order(['sort' => 'desc', 'id' => 'desc'])->limit(10)->select()->toArray();
 		} catch (Exception $exception) {
-			exit('在维护');
+			exit('在维护，懒得写页面了11');
 		}
 
 		foreach ($newsTopList as &$value) {
@@ -44,9 +44,9 @@ class Index extends Controller
 
 			$value['category_id']   = $categoryInfo['id'];
 			$value['category_name'] = $categoryInfo['name'];
-			$value['year']          = substr($value['create_at'], 0, 4);
-			$value['month']         = substr($value['create_at'], 5, 2);
-			$value['day']           = substr($value['create_at'], 8, 2);
+			$value['year']          = getYear($value['create_at']);
+			$value['month']         = getMonth($value['create_at']);
+			$value['day']           = getDay($value['create_at']);
 			$value['word_number']   = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($value['content'])));
 
 			$readTime = $value['word_number'] * env('common.read_speed');
@@ -61,9 +61,9 @@ class Index extends Controller
 
 			$value['category_id']   = $categoryInfo['id'];
 			$value['category_name'] = $categoryInfo['name'];
-			$value['year']          = substr($value['create_at'], 0, 4);
-			$value['month']         = substr($value['create_at'], 5, 2);
-			$value['day']           = substr($value['create_at'], 8, 2);
+			$value['year']          = getYear($value['create_at']);
+			$value['month']         = getMonth($value['create_at']);
+			$value['day']           = getDay($value['create_at']);
 			$value['word_number']   = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($value['content'])));
 
 			$readTime = $value['word_number'] * env('common.read_speed');

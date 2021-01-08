@@ -26,7 +26,7 @@ class Friend extends Controller
 		try {
 			$friendList = $this->app->db->name($this->friendTable)->where([['status', '=', 1]])->orderRand()->select()->toArray();
 		} catch (Exception $exception) {
-			exit('在维护');
+			exit('在维护，懒得写页面了10');
 		}
 
 		$this->assign('title', '友情链接 | ');

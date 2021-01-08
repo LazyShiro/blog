@@ -197,3 +197,23 @@ function getCategoryInfo($that, $category): array
 
 	return $categoryInfo;
 }
+
+function getYear($date)
+{
+	return substr($date, 0, 4);
+}
+
+function getMonth($date)
+{
+	return substr($date, 5, 2);
+}
+
+function getDay($date)
+{
+	return substr($date, 8, 2);
+}
+
+function getYearMonthDay($date)
+{
+	return substr($date, 0, 10);
+}
