@@ -242,6 +242,10 @@ function getRealWordNumber($content)
  */
 function getReadTime($wordNumber): string
 {
+	if (strpos($wordNumber, 'k') !== false) {
+		$wordNumber = substr($wordNumber, 0, -1) * 1000;
+	}
+
 	$readTime = $wordNumber / env('common.read_speed');
 	$readTime = $readTime > 60 ? (ceil($readTime / 60) . '分钟') : (ceil($readTime) . '秒');
 
