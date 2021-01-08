@@ -224,11 +224,13 @@ function getYearMonthDay($date)
  *
  * @param $content
  *
- * @return int
+ * @return int|string
  */
-function getRealWordNumber($content): int
+function getRealWordNumber($content)
 {
-	return mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($content)));
+	$wordNumber = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($content)));
+	$wordNumber = $wordNumber > 1000 ? (round($wordNumber / 1000) . 'k') : $wordNumber;
+	return $wordNumber;
 }
 
 /**
