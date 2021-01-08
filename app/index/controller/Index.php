@@ -47,12 +47,8 @@ class Index extends Controller
 			$value['year']          = getYear($value['create_at']);
 			$value['month']         = getMonth($value['create_at']);
 			$value['day']           = getDay($value['create_at']);
-			$value['word_number']   = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($value['content'])));
-
-			$readTime = $value['word_number'] * env('common.read_speed');
-			$readTime = $readTime > 60 ? (ceil($readTime / 60) . '分钟') : (ceil($readTime) . '秒');
-
-			$value['read_time'] = $readTime;
+			$value['word_number']   = getRealWordNumber($value['content']);
+			$value['read_time']     = getReadTime($value['word_number']);
 		}
 		unset($value);
 
@@ -64,12 +60,8 @@ class Index extends Controller
 			$value['year']          = getYear($value['create_at']);
 			$value['month']         = getMonth($value['create_at']);
 			$value['day']           = getDay($value['create_at']);
-			$value['word_number']   = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($value['content'])));
-
-			$readTime = $value['word_number'] * env('common.read_speed');
-			$readTime = $readTime > 60 ? (ceil($readTime / 60) . '分钟') : (ceil($readTime) . '秒');
-
-			$value['read_time'] = $readTime;
+			$value['word_number']   = getRealWordNumber($value['content']);
+			$value['read_time']     = getReadTime($value['word_number']);
 		}
 		unset($value);
 

@@ -45,12 +45,8 @@ class Article extends Controller
 
 		$newsInfo['create_date'] = getYearMonthDay($newsInfo['create_at']);
 		$newsInfo['update_date'] = getYearMonthDay($newsInfo['update_at']);
-		$newsInfo['word_number'] = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($newsInfo['content'])));
-
-		$readTime = $newsInfo['word_number'] * env('common.read_speed');
-		$readTime = $readTime > 60 ? (ceil($readTime / 60) . '分钟') : (ceil($readTime) . '秒');
-
-		$newsInfo['read_time'] = $readTime;
+		$newsInfo['word_number'] = getRealWordNumber($newsInfo['content']);
+		$newsInfo['read_time']   = getReadTime($newsInfo['word_number']);
 
 		if (!empty($newsPrev)) {
 			$categoryInfo = getCategoryInfo($this, $this->newsCategoryTable, $newsPrev['category']);
@@ -85,12 +81,8 @@ class Article extends Controller
 				$value['year']        = getYear($value['create_at']);
 				$value['month']       = getMonth($value['create_at']);
 				$value['day']         = getDay($value['create_at']);
-				$value['word_number'] = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($value['content'])));
-
-				$readTime = $value['word_number'] * env('common.read_speed');
-				$readTime = $readTime > 60 ? (ceil($readTime / 60) . '分钟') : (ceil($readTime) . '秒');
-
-				$value['read_time'] = $readTime;
+				$value['word_number'] = getRealWordNumber($value['content']);
+				$value['read_time']   = getReadTime($value['word_number']);
 			}
 			returnData($newsList);
 		} catch (Exception $exception) {

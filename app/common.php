@@ -218,3 +218,30 @@ function getYearMonthDay($date)
 {
 	return substr($date, 0, 10);
 }
+
+/**
+ * 获取真实文字字数
+ *
+ * @param $content
+ *
+ * @return int
+ */
+function getRealWordNumber($content): int
+{
+	return mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($content)));
+}
+
+/**
+ * 获取阅读时间
+ *
+ * @param $wordNumber
+ *
+ * @return string
+ */
+function getReadTime($wordNumber): string
+{
+	$readTime = $wordNumber / env('common.read_speed');
+	$readTime = $readTime > 60 ? (ceil($readTime / 60) . '分钟') : (ceil($readTime) . '秒');
+
+	return $readTime;
+}
