@@ -40,7 +40,7 @@ class Index extends Controller
 		}
 
 		foreach ($newsTopList as &$value) {
-			$categoryInfo = getCategoryInfo($this, $value['category']);
+			$categoryInfo = getCategoryInfo($this, $this->newsCategoryTable, $value['category']);
 
 			$value['category_id']   = $categoryInfo['id'];
 			$value['category_name'] = $categoryInfo['name'];
@@ -57,7 +57,7 @@ class Index extends Controller
 		unset($value);
 
 		foreach ($newsList as &$value) {
-			$categoryInfo = getCategoryInfo($this, $value['category']);
+			$categoryInfo = getCategoryInfo($this, $this->newsCategoryTable, $value['category']);
 
 			$value['category_id']   = $categoryInfo['id'];
 			$value['category_name'] = $categoryInfo['name'];

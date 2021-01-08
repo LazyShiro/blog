@@ -181,15 +181,16 @@ function deleteHtmlTags($tags, $string)
  * 获取分类详情
  *
  * @param $that
+ * @param $table
  * @param $category
  *
  * @return array
  */
-function getCategoryInfo($that, $category): array
+function getCategoryInfo($that, $table, $category): array
 {
 	$categoryId = substr($category, 1, -1);
 	try {
-		$categoryInfo = $that->app->db->name($that->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $categoryId]])->field('id,name')->find();
+		$categoryInfo = $that->app->db->name($table)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $categoryId]])->field('id,name')->find();
 	} catch (Exception $exception) {
 		$categoryInfo['id']   = '';
 		$categoryInfo['name'] = '';

@@ -70,7 +70,7 @@ class Tag extends Controller
 		$this->commonService->getBaseInfo($this);
 
 		foreach ($newsList as &$value) {
-			$categoryInfo = getCategoryInfo($this, $value['category']);
+			$categoryInfo = getCategoryInfo($this, $this->newsCategoryTable, $value['category']);
 
 			$value['category_id']   = $categoryInfo['id'];
 			$value['category_name'] = $categoryInfo['name'];

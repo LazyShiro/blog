@@ -53,14 +53,14 @@ class Article extends Controller
 		$newsInfo['read_time'] = $readTime;
 
 		if (!empty($newsPrev)) {
-			$categoryInfo = getCategoryInfo($this, $newsPrev['category']);
+			$categoryInfo = getCategoryInfo($this, $this->newsCategoryTable, $newsPrev['category']);
 
 			$newsPrev['category_id']   = $categoryInfo['id'];
 			$newsPrev['category_name'] = $categoryInfo['name'];
 		}
 
 		if (!empty($newsNext)) {
-			$categoryInfo = getCategoryInfo($this, $newsNext['category']);
+			$categoryInfo = getCategoryInfo($this, $this->newsCategoryTable, $newsNext['category']);
 
 			$newsNext['category_id']   = $categoryInfo['id'];
 			$newsNext['category_name'] = $categoryInfo['name'];
