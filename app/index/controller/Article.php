@@ -43,8 +43,8 @@ class Article extends Controller
 
 		$this->commonService->getBaseInfo($this);
 
-		$newsInfo['create_date'] = getYearMonthDay($newsInfo['create_date']);
-		$newsInfo['update_date'] = getYearMonthDay($newsInfo['update_date']);
+		$newsInfo['create_date'] = getYearMonthDay($newsInfo['create_at']);
+		$newsInfo['update_date'] = getYearMonthDay($newsInfo['update_at']);
 		$newsInfo['word_number'] = mb_strlen(str_replace(array("\r\n", "\r", "\n"), '', strip_tags($newsInfo['content'])));
 
 		$readTime = $newsInfo['word_number'] * env('common.read_speed');
