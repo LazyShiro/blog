@@ -26,28 +26,32 @@ class AlgoliaService
 
 	public static function uploadNews($objectId, $title, $path)
 	{
-		$index = self::initIndex();
+		if (request()->header()['host'] === 'blog.an0nymou5.com') {
+			$index = self::initIndex();
 
-		try {
-			$index->saveObjects(
-				[
+			try {
+				$index->saveObjects(
 					[
-						'objectID' => $objectId,
-						'title'    => $title,
-						'path'     => $path,
-					],
-				]
-			);
-		} catch (MissingObjectId $e) {
-			dump($e->getMessage());
+						[
+							'objectID' => $objectId,
+							'title'    => $title,
+							'path'     => $path,
+						],
+					]
+				);
+			} catch (MissingObjectId $e) {
+				dump($e->getMessage());
+			}
 		}
 	}
 
 	public static function deleteNews($objectId)
 	{
-		$index = self::initIndex();
-		
-		$index->deleteObject($objectId);
+		if (request()->header()['host'] === 'blog.an0nymou5.com') {
+			$index = self::initIndex();
+
+			$index->deleteObject($objectId);
+		}
 	}
 
 }
