@@ -52,9 +52,11 @@
 		<div class="inner">
 			<div id="main" class="pjax">
 				<div class="article wrap">
-					<div class="breadcrumb" itemscope itemtype>
+					<div class="breadcrumb" itemscope="" itemtype>
 						<i class="ic i-home"></i>
-						<span><a href="/">首页</a></span>
+						<span><a href="/" data-pjax-state="">首页</a></span>
+						<i class="ic i-angle-right"></i>
+						<span class="current" itemprop="itemListElement" itemscope="" itemtype><a href="/category/{$news_info.category_id}" itemprop="item" rel="index" title="分类于 {$news_info.category_name}" data-pjax-state=""><span itemprop="name">{$news_info.category_name}</span></a><meta itemprop="position" content="1"></span>
 					</div>
 					<article itemscope itemtype class="post block" lang="zh-CN">
 						<link itemprop="mainEntityOfPage" href="{:$_SERVER['REQUEST_SCHEME']}://{:$_SERVER['SERVER_NAME']}/{:$news_info.id}/">
