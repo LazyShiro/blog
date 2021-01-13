@@ -91,7 +91,7 @@
 				{/if}
 
 				{if auth("state") and $vo.status eq 0}
-				<a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">激 活</a>
+				<a class="layui-btn layui-btn-sm layui-btn-normal" data-action="{:url('state')}" data-value="id#{$vo.id};status#1">激 活</a>
 				{/if}
 
 				{if auth("remove")}
