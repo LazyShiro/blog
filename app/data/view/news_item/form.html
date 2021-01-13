@@ -59,6 +59,27 @@
 			</div>
 		</div>
 		<div class="layui-form-item relative block">
+			<span class="color-green font-w7 label-required-prev">赞赏</span>
+			<span class="color-desc margin-left-5">Praise</span>
+			<div class="markbox layui-textarea">
+				<?php
+					if(isset($vo['praise']) && $vo['praise'] === 0){
+						[$c, $d] = ['checked', ''];
+					}else{
+						[$c, $d] = ['', 'checked'];
+					}
+				?>
+				<label class="think-checkbox notselect">
+					<input type="radio" name="praise" value="0" lay-ignore {$c}>
+					关闭
+				</label>
+				<label class="think-checkbox notselect">
+					<input type="radio" name="praise" value="1" lay-ignore {$d}>
+					开启
+				</label>
+			</div>
+		</div>
+		<div class="layui-form-item relative block">
 			<span class="color-green font-w7 label-required-prev">文章封面</span>
 			<span class="color-desc margin-left-5">Conver Image</span>
 			<label class="relative block label-required-null">

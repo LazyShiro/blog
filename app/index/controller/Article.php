@@ -34,9 +34,10 @@ class Article extends Controller
 				$this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $id]])->inc('num_read')->update();
 			}
 
-			$newsInfo = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $id]])->field('id,name,mark,cover,content,num_like,num_read,num_collect,num_comment,create_at,update_at')->find();
+			$newsInfo = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $id]])->field('id,name,mark,category,cover,content,num_like,num_read,num_collect,num_comment,praise,create_at,update_at')->find();
 
-			$newsInfo['mark'] = $this->app->db->name($this->newsMarkTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', 'in', str2arr($newsInfo['mark'])]])->column('id,name');
+			$newsInfo['mark']     = $this->app->db->name($this->newsMarkTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', 'in', str2arr($newsInfo['mark'])]])->column('id,name');
+			$newsInfo['category'] = $this->app->db->name($this->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', 'in', str2arr($newsInfo['category'])]])->column('id,name');
 
 			$newsPrev = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '<', $id]])->order(['id' => 'desc'])->field('id,name,category,cover')->find();
 			$newsNext = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '>', $id]])->order(['id' => 'asc'])->field('id,name,category,cover')->find();
