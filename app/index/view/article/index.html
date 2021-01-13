@@ -68,6 +68,14 @@
 						</span>
 						<div class="body md" itemprop="articleBody">
 							{$news_info.content|raw}
+							<div class="tags">
+								{foreach $news_info.mark as $value}
+								<a href="/tag/{$value.id}" rel="tag" data-pjax-state="" class="success">
+									<i class="ic i-tag"></i>
+									{$value.name}
+								</a>
+								{/foreach}
+							</div>
 						</div>
 						<footer>
 							<div class="meta">
@@ -89,13 +97,13 @@
 									赞赏
 								</button>
 								<p>请我喝[茶]~(￣▽￣)~*</p>
-								<div id="qr">
+								<div id="qr" style="opacity: 1; display: inline-flex;">
 									<div>
-										<img data-src="/static/index/images/wechatpay.png" alt="{$user_info.nickname} 微信支付">
+										<img data-src="/static/index/images/wechatpay.png" alt="{$user_info.nickname} 微信支付" src="/static/index/images/wechatpay.png" data-loaded="true" class="lozaded">
 										<p>微信支付</p>
 									</div>
 									<div>
-										<img data-src="/static/index/images/alipay.png" alt="{$user_info.nickname} 支付宝">
+										<img data-src="/static/index/images/alipay.png" alt="{$user_info.nickname} 支付宝" src="/static/index/images/alipay.png" data-loaded="true" class="lozaded">
 										<p>支付宝</p>
 									</div>
 								</div>
