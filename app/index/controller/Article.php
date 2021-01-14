@@ -36,9 +36,6 @@ class Article extends Controller
 
 			$newsInfo = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '=', $id]])->field('id,name,mark,category,cover,content,num_like,num_read,num_collect,num_comment,praise,create_at,update_at')->find();
 
-			$newsInfo['mark']     = $this->app->db->name($this->newsMarkTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', 'in', str2arr($newsInfo['mark'])]])->column('id,name');
-			$newsInfo['category'] = $this->app->db->name($this->newsCategoryTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', 'in', str2arr($newsInfo['category'])]])->column('id,name');
-
 			$newsPrev = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '<', $id]])->order(['id' => 'desc'])->field('id,name,category,cover')->find();
 			$newsNext = $this->app->db->name($this->newsItemTable)->where([['status', '=', 1], ['deleted', '=', 0], ['id', '>', $id]])->order(['id' => 'asc'])->field('id,name,category,cover')->find();
 		} catch (Exception $exception) {
@@ -47,6 +44,8 @@ class Article extends Controller
 
 		$this->commonService->getBaseInfo($this);
 
+		$newsInfo['mark']        = getMarkList($this, $this->newsMarkTable, $newsInfo['mark']);
+		$newsInfo['category']    = getCategoryInfo($this, $this->newsCategoryTable, $newsInfo['category']);
 		$newsInfo['create_date'] = getYearMonthDay($newsInfo['create_at']);
 		$newsInfo['update_date'] = getYearMonthDay($newsInfo['update_at']);
 		$newsInfo['word_number'] = getRealWordNumber($newsInfo['content']);

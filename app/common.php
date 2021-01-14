@@ -178,6 +178,28 @@ function deleteHtmlTags($tags, $string)
 }
 
 /**
+ * 获取标签列表
+ *
+ * @param $that
+ * @param $table
+ * @param $mark
+ *
+ * @return array
+ */
+function getMarkList($that, $table, $mark): array
+{
+	$mark = str2arr($mark);
+
+	try {
+		$markList = $that->app->db->name($table)->where([['status', '=', 1], ['deleted', '=', 0], ['id', 'in', $mark]])->column('id,name');
+	} catch (Exception $exception) {
+		$markList = [];
+	}
+
+	return $markList;
+}
+
+/**
  * 获取分类详情
  *
  * @param $that

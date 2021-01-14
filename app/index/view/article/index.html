@@ -56,7 +56,7 @@
 						<i class="ic i-home"></i>
 						<span><a href="/" data-pjax-state="">首页</a></span>
 						<i class="ic i-angle-right"></i>
-						<span class="current" itemprop="itemListElement" itemscope="" itemtype><a href="/category/{$news_info.category.0.id}" itemprop="item" rel="index" title="分类于 {$news_info.category.0.name}" data-pjax-state=""><span itemprop="name">{$news_info.category.0.name}</span></a><meta itemprop="position" content="1"></span>
+						<span class="current" itemprop="itemListElement" itemscope="" itemtype><a href="/category/{$news_info.category.id}" itemprop="item" rel="index" data-pjax-state=""><span itemprop="name">{$news_info.category.name|raw}</span></a><meta itemprop="position" content="1"></span>
 					</div>
 					<article itemscope itemtype class="post block" lang="zh-CN">
 						<link itemprop="mainEntityOfPage" href="{:$_SERVER['REQUEST_SCHEME']}://{:$_SERVER['SERVER_NAME']}/{:$news_info.id}/">
