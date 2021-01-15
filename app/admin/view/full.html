@@ -11,12 +11,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=0.4">
     <link rel="shortcut icon" href="{:sysconf('site_icon')}">
-    <link rel="stylesheet" href="__ROOT__/static/plugs/awesome/fonts.css?at={:date('md')}">
-    <link rel="stylesheet" href="__ROOT__/static/plugs/layui/css/layui.css?at={:date('md')}">
-    <link rel="stylesheet" href="__ROOT__/static/theme/css/console.css?at={:date('md')}">
+    <link rel="stylesheet" href="{:env('common.resource_base_url')}plugs/awesome/fonts.css?at={:date('md')}">
+    <link rel="stylesheet" href="{:env('common.resource_base_url')}plugs/layui/css/layui.css?at={:date('md')}">
+    <link rel="stylesheet" href="{:env('common.resource_base_url')}theme/css/console.css?at={:date('md')}">
     {block name="style"}{/block}
     <script>window.tapiRoot = '{:sysuri("admin/index/index",[],false)}'</script>
-    <script src="__ROOT__/static/plugs/jquery/pace.min.js"></script>
+    <script src="{:env('common.resource_base_url')}plugs/jquery/pace.min.js"></script>
 </head>
 
 <body class="layui-layout-body">
@@ -25,9 +25,9 @@
     <div class="layui-body" style="top:0">{block name='content'}{/block}</div>
 </div>
 {/block}
-<script src="__ROOT__/static/plugs/layui/layui.all.js"></script>
-<script src="__ROOT__/static/plugs/require/require.js"></script>
-<script src="__ROOT__/static/admin.js"></script>
+<script src="{:env('common.resource_base_url')}plugs/layui/layui.all.js"></script>
+<script src="{:env('common.resource_base_url')}plugs/require/require.js"></script>
+<script src="{:env('common.resource_base_url')}admin.js"></script>
 {block name='script'}{/block}
 </body>
 
