@@ -1,7 +1,7 @@
 {extend name="index/index"}
 
 {block name="body"}
-<div class="login-container" data-supersized="__ROOT__/static/theme/img/login/bg1.jpg,__ROOT__/static/theme/img/login/bg2.jpg">
+<div class="login-container" data-supersized="{:env('common.resource_base_url')}theme/img/login/bg1.jpg,{:env('common.resource_base_url')}theme/img/login/bg2.jpg">
     <div class="header notselect layui-hide-xs">
         <a href="{:url('@')}" class="title">{:sysconf('app_name')}<span>{:sysconf('app_version')}</span></a>
         {notempty name='devmode'}
@@ -49,10 +49,10 @@
 {block name='style'}
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <script>if (location.href.indexOf('#') > -1) location.replace(location.href.split('#')[0])</script>
-<link rel="stylesheet" href="__ROOT__/static/theme/css/login.css">
+<link rel="stylesheet" href="{:env('common.resource_base_url')}theme/css/login.css">
 {/block}
 
 {block name='script'}
-<script src="__ROOT__/static/login.js"></script>
-<script src="__ROOT__/static/plugs/supersized/supersized.3.2.7.min.js"></script>
+<script src="{:env('common.resource_base_url')}login.js"></script>
+<script src="{:env('common.resource_base_url')}plugs/supersized/supersized.3.2.7.min.js"></script>
 {/block}
