@@ -4,3 +4,6 @@ runtime
 .user.ini
 upload
 static_bak
+.htaccess
+404.html
+index.html
