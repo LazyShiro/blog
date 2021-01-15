@@ -5,11 +5,11 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2">
 	<meta name="theme-color" content="#FFF">
 	<link rel="apple-touch-icon" sizes="180x180" href="/static/index/images/apple-touch-icon.png">
-	<link rel="icon" type="image/ico" sizes="32x32" href="/static/index/images/favicon.ico">
+	<link rel="icon" type="image/ico" sizes="32x32" href="{:env('common.resource_base_url')}/index/images/favicon.ico">
 	<meta http-equiv="Cache-Control" content="no-transform">
 	<meta http-equiv="Cache-Control" content="no-siteapp">
-	<link rel="stylesheet" href="/static/index/css/family.css">
-	<link rel="stylesheet" href="/static/index/css/app.css?v=0.2.5">
+	<link rel="stylesheet" href="{:env('common.resource_base_url')}index/css/family.css">
+	<link rel="stylesheet" href="{:env('common.resource_base_url')}index/css/app.css?v=0.2.5">
 	<link rel="canonical" href="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}">
 	<title>{$title}{:sysconf('site_name')} - {:sysconf('site_main_title')} - {:sysconf('site_sub_title')}</title>
 </head>

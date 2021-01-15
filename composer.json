@@ -30,7 +30,8 @@
     "zoujingli/ip2region": "^1.0",
     "zoujingli/think-library": "6.0.x-dev",
     "zoujingli/wechat-developer": "^1.2",
-    "algolia/algoliasearch-client-php": "^2.7"
+    "algolia/algoliasearch-client-php": "^2.7",
+    "guzzlehttp/guzzle": "^7.2"
   },
   "autoload": {
     "psr-0": {
