@@ -18,6 +18,8 @@ easyblog
 * 上述两种方案选定之后，修改对应方案里的如下位置。
 * 到 [LeanCloud](https://www.leancloud.cn/) 获取appid、appkey后，修改 [方案]/index/js/app.js 里的leancloud appid 和 leancloud appkey
 * 到 [algolia](https://www.algolia.com/) 获取appid、apikey、indexname后，修改 [方案]/index/js/app.js 里的algolia appid、algolia apikey和algolia indexname
+* 将自己的常用邮箱md5转码之后，修改 [方案]/index/js/app.js 里的master email md5
+* 获取自己的网易云歌单，修改 [方案]/index/js/app.js 里的music list title、music list link
 * mkdir runtime
 * chmod 777 runtime
 
