@@ -19,22 +19,30 @@ class Misc extends Controller
 		//js数组
 		$jssArray = explode(",", $condition);
 
+		//根目录
+		$root   = $_SERVER['DOCUMENT_ROOT'];
 		$client = new Client();
 
 		//初始化js内容
 		$content = "";
 		foreach ($jssArray as $value) {
 			//获取对应的js内容
-			try {
-				$response = $client->request('GET', $value, [
-					'headers' => [
-						'Referer' => $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['SERVER_NAME'] . "/",
-					],
-				]);
-			} catch (GuzzleException $e) {
-				exit('请求错误');
+			//获取对应的js内容
+			if (strpos($value, 'http') !== false) {
+
+				try {
+					$response = $client->request('GET', $value, [
+						'headers' => [
+							'Referer' => $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['SERVER_NAME'] . "/",
+						],
+					]);
+				} catch (GuzzleException $e) {
+					exit('请求错误');
+				}
+				$_content = $response->getBody()->getContents();
+			} else {
+				$_content = file_get_contents($root . $value);
 			}
-			$_content = $response->getBody()->getContents();
 			if (!empty($_content)) {
 				$content .= $_content . "\n";
 			}
@@ -52,6 +60,8 @@ class Misc extends Controller
 		//css参数
 		$condition = param('css');
 
+		//根目录
+		$root   = $_SERVER['DOCUMENT_ROOT'];
 		$client = new Client();
 
 		//css数组
@@ -61,16 +71,20 @@ class Misc extends Controller
 		$content = "";
 		foreach ($cssArray as $value) {
 			//获取对应的js内容
-			try {
-				$response = $client->request('GET', $value, [
-					'headers' => [
-						'Referer' => $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['SERVER_NAME'] . "/",
-					],
-				]);
-			} catch (GuzzleException $e) {
-				exit('请求错误');
+			if (strpos($value, 'http') !== false) {
+				try {
+					$response = $client->request('GET', $value, [
+						'headers' => [
+							'Referer' => $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['SERVER_NAME'] . "/",
+						],
+					]);
+				} catch (GuzzleException $e) {
+					exit('请求错误');
+				}
+				$_content = $response->getBody()->getContents();
+			} else {
+				$_content = file_get_contents($root . $value);
 			}
-			$_content = $response->getBody()->getContents();
 			if (!empty($_content)) {
 				$content .= $_content . "\n";
 			}
