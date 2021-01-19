@@ -158,8 +158,10 @@ class NewsItem extends Controller
 
 		AlgoliaService::uploadNews($data['code'], $data['name'], $newsItemId);
 
-		if ($state) {
+		if ($state && $data['bns'] === 'back') {
 			$this->success('文章内容保存成功！', 'javascript:history.back()');
+		} else {
+			$this->success('文章内容保存成功！', 'javascript:void(0)');
 		}
 	}
 

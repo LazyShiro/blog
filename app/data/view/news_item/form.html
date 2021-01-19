@@ -112,9 +112,11 @@
 		{/notempty} {notempty name='vo.code'}
 		<input type='hidden' value='{$vo.code}' name='code'>
 		{/notempty}
+		<input type="hidden" value name="bns">
 
 		<div class="layui-form-item text-center">
-			<button type="submit" class="layui-btn">保存数据</button>
+			<button type="submit" class="layui-btn save-and-back">保存数据并返回</button>
+			<button type="submit" class="layui-btn save-and-stay">保存数据不返回</button>
 			<button type='button' class="layui-btn layui-btn-danger" data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
 		</div>
 	</div>
@@ -122,6 +124,12 @@
 		require(['ckeditor'], function () {
 			window.createEditor('[name=content]', {height: 300});
 		});
+		$(".save-and-back").on("click", function () {
+			$("input[name='bns']").val('back')
+		})
+		$(".save-and-stay").on("click", function () {
+			$("input[name='bns']").val('stay')
+		})
 	</script>
 </form>
 {/block}
