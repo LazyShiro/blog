@@ -1,7 +1,7 @@
 var e = {
 	version: "0.2.5",
 	hostname: window.location.origin,
-	hostname: window.location.orig
+	hostname: window.location.origin,
 	statics: document.getElementById('resource_base_url').innerHTML,
 	favicon: {
 		normal: "index/images/favicon.ico",
