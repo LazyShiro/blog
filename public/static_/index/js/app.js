@@ -16,9 +16,9 @@ var e = {
 		fancybox: "combine/npm/jquery@3.5.1/dist/jquery.min.js,npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js,npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"
 	},
 	css: {
-		valine: "css/comment.css",
+		valine: "index/css/comment.css",
 		katex: "npm/katex@0.12.0/dist/katex.min.css",
-		mermaid: "css/mermaid.css",
+		mermaid: "index/css/mermaid.css",
 		fancybox: "combine/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
 	},
 	loader: {
