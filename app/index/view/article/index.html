@@ -1,5 +1,24 @@
-{include file="common/header" /}
-<body itemscope itemtype>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2">
+	<meta name="theme-color" content="#FFF">
+	<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+	<link rel="icon" type="image/ico" sizes="32x32" href="{:env('common.resource_base_url')}/index/images/favicon.ico">
+	<meta http-equiv="Cache-Control" content="no-transform">
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<link rel="alternate" type="application/rss+xml" title="Hexo" href="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/rss.xml">
+	<link rel="alternate" type="application/atom+xml" title="Hexo" href="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/atom.xml">
+	<link rel="alternate" type="application/json" title="Hexo" href="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/feed.json">
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+	<link rel="stylesheet" href="{:env('common.resource_base_url')}index/css/app.css?v=0.2.5">
+	<meta name="keywords" content="Hexo,教程">
+	<link rel="canonical" href="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/{$news_info.id}">
+	<title>{$title}{:sysconf('site_name')} - {:sysconf('site_main_title')} - {:sysconf('site_sub_title')}</title>
+	<meta name="generator" content="Hexo 5.3.0">
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
 <div id="loading">
 	<div class="cat">
 		<div class="body"></div>
@@ -19,7 +38,7 @@
 	</div>
 </div>
 <div id="container">
-	<header id="header" itemscope itemtype>
+	<header id="header" itemscope itemtype="http://schema.org/WPHeader">
 		<div class="inner">
 			<div id="brand">
 				<div class="pjax">
@@ -41,33 +60,70 @@
 					</div>
 				</div>
 			</div>
-			{include file="common/nav" /}
+			<nav id="nav">
+				<div class="inner">
+					<div class="toggle">
+						<div class="lines" aria-label="切换导航栏">
+							<span class="line"></span>
+							<span class="line"></span>
+							<span class="line"></span>
+						</div>
+					</div>
+					<ul class="menu">
+						<li class="item title">
+							<a href="/" rel="start">{:sysconf('site_name')}</a>
+						</li>
+					</ul>
+					<ul class="right">
+						<li class="item theme">
+							<i class="ic i-sun"></i>
+						</li>
+						<li class="item search">
+							<i class="ic i-search"></i>
+						</li>
+					</ul>
+				</div>
+			</nav>
 		</div>
 		<div id="imgs" class="pjax">
-			<img src="{$news_info.cover}">
+			<ul>
+				{foreach $picture_list as $item}
+				<li class="item" data-background-image="{$item.url}"></li>
+				{/foreach}
+			</ul>
 		</div>
 	</header>
-	{include file="common/wave" /}
+	<div id="waves">
+		<svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+			<defs>
+				<path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"/>
+			</defs>
+			<g class="parallax">
+				<use xlink:href="#gentle-wave" x="48" y="0"/>
+				<use xlink:href="#gentle-wave" x="48" y="3"/>
+				<use xlink:href="#gentle-wave" x="48" y="5"/>
+				<use xlink:href="#gentle-wave" x="48" y="7"/>
+			</g>
+		</svg>
+	</div>
 	<main>
 		<div class="inner">
 			<div id="main" class="pjax">
 				<div class="article wrap">
-					<div class="breadcrumb" itemscope="" itemtype>
+					<div class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
 						<i class="ic i-home"></i>
-						<span><a href="/" data-pjax-state="">首页</a></span>
+						<span><a href="/">首页</a></span>
 						<i class="ic i-angle-right"></i>
 						<span class="current" itemprop="itemListElement" itemscope="" itemtype><a href="/category/{$news_info.category.id}" itemprop="item" rel="index" data-pjax-state=""><span itemprop="name">{$news_info.category.name|raw}</span></a><meta itemprop="position" content="1"></span>
 					</div>
-					<article itemscope itemtype class="post block" lang="zh-CN">
+					<article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
 						<link itemprop="mainEntityOfPage" href="{:$_SERVER['REQUEST_SCHEME']}://{:$_SERVER['SERVER_NAME']}/{:$news_info.id}/">
-						<span hidden itemprop="author" itemscope itemtype>
+						<span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
 							<meta itemprop="image" content="{$user_info.headimg}">
 							<meta itemprop="name" content="{$user_info.nickname}">
 							<meta itemprop="description" content="{:sysconf('site_sub_title')}, {$user_info.describe}">
 						</span>
-						<span hidden itemprop="publisher" itemscope itemtype>
-							<meta itemprop="name" content="Hexo">
-						</span>
+						<span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Hexo"></span>
 						<div class="body md" itemprop="articleBody">
 							{$news_info.content|raw}
 							<div class="tags">
@@ -183,12 +239,243 @@
 				</div>
 				<div class="wrap" id="comments"></div>
 			</div>
-			{include file="common/sidebar" /}
+			<div id="sidebar">
+				<div class="inner">
+					<div class="panels">
+						<div class="inner">
+							<div class="contents panel pjax" data-title="文章目录">
+								{$news_info.structure|raw}
+							</div>
+							<div class="related panel pjax" data-title="系列文章"></div>
+							<!--							<div class="contents panel pjax" data-title="文章目录">-->
+<!--															<ol class="toc">-->
+<!--																<li class="toc-item toc-level-1">-->
+<!--																	<a class="toc-link" href="#%E9%A6%96%E9%A1%B5%E7%BD%AE%E9%A1%B6%E6%96%87%E7%AB%A0">-->
+<!--																		<span class="toc-number">1.</span>-->
+<!--																		<span class="toc-text">首页置顶文章</span>-->
+<!--																	</a>-->
+<!--																</li>-->
+<!--																<li class="toc-item toc-level-1">-->
+<!--																	<a class="toc-link" href="#%E9%A6%96%E9%A1%B5%E7%B2%BE%E9%80%89%E5%88%86%E7%B1%BB">-->
+<!--																		<span class="toc-number">2.</span>-->
+<!--																		<span class="toc-text">首页精选分类</span>-->
+<!--																	</a>-->
+<!--																</li>-->
+<!--																<li class="toc-item toc-level-1">-->
+<!--																	<a class="toc-link" href="#%E6%96%87%E7%AB%A0%E5%B0%81%E9%9D%A2%E5%9B%BE">-->
+<!--																		<span class="toc-number">3.</span>-->
+<!--																		<span class="toc-text">文章封面图</span>-->
+<!--																	</a>-->
+<!--																</li>-->
+<!--																<li class="toc-item toc-level-1">-->
+<!--																	<a class="toc-link" href="#%E5%9B%BE%E7%89%87%E5%B1%95%E7%A4%BA%E4%B8%8E%E7%9B%B8%E5%86%8C">-->
+<!--																		<span class="toc-number">4.</span>-->
+<!--																		<span class="toc-text">图片展示与相册</span>-->
+<!--																	</a>-->
+<!--																	<ol class="toc-child">-->
+<!--																		<li class="toc-item toc-level-2">-->
+<!--																			<a class="toc-link" href="#%E5%9B%BE%E6%A1%88%E5%88%97%E8%A1%A8no1">-->
+<!--																				<span class="toc-number">4.1.</span>-->
+<!--																				<span class="toc-text">图案列表 No.1</span>-->
+<!--																			</a>-->
+<!--																		</li>-->
+<!--																		<li class="toc-item toc-level-2">-->
+<!--																			<a class="toc-link" href="#%E5%9B%BE%E6%A1%88%E5%88%97%E8%A1%A8no2">-->
+<!--																				<span class="toc-number">4.2.</span>-->
+<!--																				<span class="toc-text">图案列表 No.2</span>-->
+<!--																			</a>-->
+<!--																		</li>-->
+<!--																	</ol>-->
+<!--																</li>-->
+<!--																<li class="toc-item toc-level-1">-->
+<!--																	<a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E9%A1%B5%E9%9D%A2%E9%85%8D%E8%89%B2">-->
+<!--																		<span class="toc-number">5.</span>-->
+<!--																		<span class="toc-text">自定义页面配色</span>-->
+<!--																	</a>-->
+<!--																</li>-->
+<!--																<li class="toc-item toc-level-1">-->
+<!--																	<a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%BB%E9%A2%98%E5%9B%BE%E7%89%87">-->
+<!--																		<span class="toc-number">6.</span>-->
+<!--																		<span class="toc-text">自定义主题图片</span>-->
+<!--																	</a>-->
+<!--																</li>-->
+<!--																<li class="toc-item toc-level-1">-->
+<!--																	<a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AF%AD%E8%A8%80%E5%8C%85">-->
+<!--																		<span class="toc-number">7.</span>-->
+<!--																		<span class="toc-text">自定义语言包</span>-->
+<!--																	</a>-->
+<!--																</li>-->
+<!--															</ol>-->
+							<!--							</div>-->
+							<!--							<div class="related panel pjax" data-title="系列文章">-->
+							<!--								<ul>-->
+							<!--									<li>-->
+							<!--										<a href="/computer-science/note/theme-shoka-doc/" rel="bookmark" title="Hexo主题Shoka & multi-markdown-it渲染器使用说明">Hexo主题Shoka & multi-markdown-it渲染器使用说明</a>-->
+							<!--									</li>-->
+							<!--									<li>-->
+							<!--										<a href="/computer-science/note/theme-shoka-doc/dependents/" rel="bookmark" title="Step.1 依赖插件">Step.1 依赖插件</a>-->
+							<!--									</li>-->
+							<!--									<li>-->
+							<!--										<a href="/computer-science/note/theme-shoka-doc/config/" rel="bookmark" title="Step.2 基本配置">Step.2 基本配置</a>-->
+							<!--									</li>-->
+							<!--									<li class="active">-->
+							<!--										<a href="/computer-science/note/theme-shoka-doc/display/" rel="bookmark" title="Step.3 界面显示">Step.3 界面显示</a>-->
+							<!--									</li>-->
+							<!--									<li>-->
+							<!--										<a href="/computer-science/note/theme-shoka-doc/special/" rel="bookmark" title="Step.4 主题特殊功能">Step.4 主题特殊功能</a>-->
+							<!--									</li>-->
+							<!--								</ul>-->
+							<!--							</div>-->
+							<div class="overview panel" data-title="站点概览">
+								<div class="author" itemprop="author" itemscope itemtype>
+									<img class="image" itemprop="image" alt="{$user_info.nickname}" data-src="{$user_info.headimg}">
+									<p class="name" itemprop="name">{$user_info.nickname}</p>
+									<div class="description" itemprop="description">{$user_info.describe}</div>
+								</div>
+								<nav class="state">
+									<div class="item posts">
+										<a href="/archives">
+											<span class="count">{$news_count}</span>
+											<span class="name">文章</span>
+										</a>
+									</div>
+									<div class="item categories">
+										<a href="/category">
+											<span class="count">{$news_category_count}</span>
+											<span class="name">分类</span>
+										</a>
+									</div>
+									<div class="item tags">
+										<a href="/tag">
+											<span class="count">{$news_mark_count}</span>
+											<span class="name">标签</span>
+										</a>
+									</div>
+								</nav>
+								<div class="social">
+									{foreach $user_info.extra as $key => $value}
+									<span class="exturl item {$value.sign}" data-url="{$value.addressBase64}" title="{$value.address}"><i class="ic i-{$value.class}"></i></span>
+									{/foreach}
+								</div>
+								<ul class="menu">
+									<li class="item">
+										<a href="/" rel="section">
+											<i class="ic i-home"></i>
+											首页
+										</a>
+									</li>
+									<li class="item dropdown">
+										<a href="javascript:void(0);">
+											<i class="ic i-feather"></i>
+											文章
+										</a>
+										<ul class="submenu">
+											<li class="item">
+												<a href="/archives" rel="section">
+													<i class="ic i-list-alt"></i>
+													归档
+												</a>
+											</li>
+											<li class="item">
+												<a href="/category" rel="section">
+													<i class="ic i-th"></i>
+													分类
+												</a>
+											</li>
+											<li class="item">
+												<a href="/tag" rel="section">
+													<i class="ic i-tags"></i>
+													标签
+												</a>
+											</li>
+										</ul>
+									</li>
+									<li class="item">
+										<a href="/friend" rel="section">
+											<i class="ic i-heart"></i>
+											友达
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<ul id="quick">
+						<li class="prev pjax">
+							{if !empty($news_prev)}
+							<a href="/{$news_prev.id}" rel="prev" title="上一篇">
+								<i class="ic i-chevron-left"></i>
+							</a>
+							{/if}
+						</li>
+						<li class="up">
+							<i class="ic i-arrow-up"></i>
+						</li>
+						<li class="down">
+							<i class="ic i-arrow-down"></i>
+						</li>
+						<li class="next pjax">
+							{if !empty($news_next)}
+							<a href="/{$news_next.id}" rel="next" title="下一篇">
+								<i class="ic i-chevron-right"></i>
+							</a>
+							{/if}
+						</li>
+						<li class="percent"></li>
+					</ul>
+				</div>
+			</div>
 			<div class="dimmer"></div>
 		</div>
 	</main>
-	{include file="common/footer" /}
+	<footer id="footer">
+		<div class="inner">
+			<div class="status">
+				<div class="copyright">
+					{if !empty(sysconf('site_copy'))} {:sysconf('site_copy')} {else}
+					&copy; 2020 –
+					<span itemprop="copyrightYear">{:date('Y')}</span>
+					<span class="with-love"><i class="ic i-star rotate"></i> </span>
+					<span class="author" itemprop="copyrightHolder">{$user_info.nickname}</span>
+					{/if}
+				</div>
+				<div class="powered-by">
+					theme-source
+					<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+					@
+					<span class="exturl" data-url="aHR0cHM6Ly9zaG9rYS5sb3N0eXUubWUv">霜月琉璃</span>
+				</div>
+			</div>
+		</div>
+	</footer>
 </div>
-{include file="common/js" /}
+<script data-config type="text/javascript">
+	var LOCAL = {
+		path: "{if isset($news_info['id'])}{$news_info.id}{/if}",
+		favicon: {
+			show: "这货杀了个回马枪！",
+			hide: "终于走了，休息一下！"
+		},
+		search: {
+			placeholder: "文章搜索",
+			empty: "关于 「 ${query} 」，什么也没搜到",
+			stats: "${time} ms 内找到 ${hits} 条结果"
+		},
+		valine: !0,
+		fancybox: !0,
+		copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+		ignores: [
+			function (e) {
+				return e.includes("#")
+			},
+			function (e) {
+				return new RegExp(LOCAL.path + "$").test(e)
+			}
+		]
+	}
+</script>
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+<script src="{:env('common.resource_base_url')}index/js/app.js?v=0.2.5"></script>
 </body>
 </html>

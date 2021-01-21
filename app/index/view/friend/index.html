@@ -1,5 +1,24 @@
-{include file="common/header" /}
-<body itemscope itemtype>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2">
+	<meta name="theme-color" content="#FFF">
+	<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+	<link rel="icon" type="image/ico" sizes="32x32" href="{:env('common.resource_base_url')}index/images/favicon.ico">
+	<meta http-equiv="Cache-Control" content="no-transform">
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<link rel="alternate" type="application/rss+xml" title="Hexo" href="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/rss.xml">
+	<link rel="alternate" type="application/atom+xml" title="Hexo" href="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/atom.xml">
+	<link rel="alternate" type="application/json" title="Hexo" href="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/feed.json">
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Mulish:300,300italic,400,400italic,700,700italic%7CFredericka%20the%20Great:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20JP:300,300italic,400,400italic,700,700italic%7CNoto%20Serif%20SC:300,300italic,400,400italic,700,700italic%7CInconsolata:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+	<link rel="stylesheet" href="{:env('common.resource_base_url')}index/css/app.css?v=0.2.5">
+	<meta name="keywords" content="友情链接">
+	<link rel="canonical" href="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/friend">
+	<title>{$title}{:sysconf('site_name')} - {:sysconf('site_main_title')} - {:sysconf('site_sub_title')}</title>
+	<meta name="generator" content="Hexo 5.3.0">
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
 <div id="loading">
 	<div class="cat">
 		<div class="body"></div>
@@ -19,28 +38,67 @@
 	</div>
 </div>
 <div id="container">
-	<header id="header" itemscope itemtype>
+	<header id="header" itemscope itemtype="http://schema.org/WPHeader">
 		<div class="inner">
 			<div id="brand">
 				<div class="pjax">
 					<h1 itemprop="name headline">友情链接</h1>
 				</div>
 			</div>
-			{include file="common/nav" /}
+			<nav id="nav">
+				<div class="inner">
+					<div class="toggle">
+						<div class="lines" aria-label="切换导航栏">
+							<span class="line"></span>
+							<span class="line"></span>
+							<span class="line"></span>
+						</div>
+					</div>
+					<ul class="menu">
+						<li class="item title">
+							<a href="/" rel="start">{:sysconf('site_name')}</a>
+						</li>
+					</ul>
+					<ul class="right">
+						<li class="item theme">
+							<i class="ic i-sun"></i>
+						</li>
+						<li class="item search">
+							<i class="ic i-search"></i>
+						</li>
+					</ul>
+				</div>
+			</nav>
 		</div>
 		<div id="imgs" class="pjax">
-			{include file="common/carousel" /}
+			<ul>
+				{foreach $picture_list as $item}
+				<li class="item" data-background-image="{$item.url}"></li>
+				{/foreach}
+			</ul>
 		</div>
 	</header>
-	{include file="common/wave" /}
+	<div id="waves">
+		<svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+			<defs>
+				<path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"/>
+			</defs>
+			<g class="parallax">
+				<use xlink:href="#gentle-wave" x="48" y="0"/>
+				<use xlink:href="#gentle-wave" x="48" y="3"/>
+				<use xlink:href="#gentle-wave" x="48" y="5"/>
+				<use xlink:href="#gentle-wave" x="48" y="7"/>
+			</g>
+		</svg>
+	</div>
 	<main>
 		<div class="inner">
 			<div id="main" class="pjax">
 				<div class="page wrap">
-					<article itemscope itemtype class="post block" lang="zh-CN">
-						<link itemprop="mainEntityOfPage" href="{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['SERVER_NAME']}/friend">
-						<span hidden itemprop="author" itemscope itemtype><meta itemprop="image" content="/images/avatar.jpg"><meta itemprop="name" content="John Doe"><meta itemprop="description" content="subtitle, 描述 123"></span>
-						<span hidden itemprop="publisher" itemscope itemtype><meta itemprop="name" content="Hexo"></span>
+					<article itemscope itemtype="http://schema.org/Article" class="post block" lang="zh-CN">
+						<link itemprop="mainEntityOfPage" href="http://yoursite.com/friends/index.html">
+						<span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="image" content="/images/avatar.jpg"><meta itemprop="name" content="John Doe"><meta itemprop="description" content="subtitle, 描述 123"></span>
+						<span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Hexo"></span>
 						<div class="body md" itemprop="articleBody">
 							<h1 id="本站信息">
 								<a class="anchor" href="#本站信息">#</a>
@@ -98,14 +156,270 @@
 						</footer>
 					</article>
 				</div>
-				{include file="common/friend_apply_form" /}
+				<style>
+					#form {
+						border-radius: 0.5rem;
+						border: 0.0625rem solid var(--grey-2);
+						box-shadow: 0 0.625rem 1.875rem -0.9375rem var(--box-bg-shadow);
+						margin-bottom: 0.625rem;
+						position: relative;
+						padding: 0.625rem;
+					}
+
+					#form .friend_form_input input, #form .friend_form_button input {
+						font-family: inherit;
+						font-size: 100%;
+						line-height: 1.15;
+						margin: 0;
+						color: var(--text-color);
+						overflow: visible;
+						border: none;
+						outline: none;
+						background: transparent;
+						transition: all 0.25s ease;
+						padding: 0.625rem 0.3125rem;
+						width: 100%;
+						border-bottom: 0.0625rem dashed var(--grey-4);
+						text-align: center;
+					}
+
+					#form .friend_form_button input {
+						width: 100%;
+					}
+				</style>
+				<div class="comment">
+					<form id="form">
+						<div class="friend_form_input">
+							<input type="text" name="site" placeholder="填写你的网站的名字" autocomplete="off">
+							<input type="text" name="owner" placeholder="填写你的名字" autocomplete="off">
+							<input type="text" name="url" placeholder="填写你的网址" autocomplete="off">
+							<input type="text" name="desc" placeholder="填写你的简短描述" autocomplete="off">
+							<input type="text" name="image" placeholder="填写你的一张图片" autocomplete="off">
+							<input type="text" name="color" placeholder="填写你的方块颜色" autocomplete="off">
+						</div>
+						<div class="friend_form_button">
+							<input type="button" value="安排一下">
+						</div>
+					</form>
+				</div>
 			</div>
-			{include file="common/sidebar" /}
+			<div id="sidebar">
+				<div class="inner">
+					<div class="panels">
+						<div class="inner">
+							<div class="contents panel pjax" data-title="文章目录">
+								<ol class="toc">
+									<li class="toc-item toc-level-1">
+										<a class="toc-link" href="#%E6%9C%AC%E7%AB%99%E4%BF%A1%E6%81%AF">
+											<span class="toc-number">1.</span>
+											<span class="toc-text">本站信息</span>
+										</a>
+									</li>
+									<li class="toc-item toc-level-1">
+										<a class="toc-link" href="#%E7%94%B3%E8%AF%B7%E6%96%B9%E6%B3%95">
+											<span class="toc-number">2.</span>
+											<span class="toc-text">申请方法</span>
+										</a>
+									</li>
+									<li class="toc-item toc-level-1">
+										<a class="toc-link" href="#%E5%B0%8F%E4%BC%99%E4%BC%B4%E4%BB%AC">
+											<span class="toc-number">3.</span>
+											<span class="toc-text">小伙伴们</span>
+										</a>
+									</li>
+								</ol>
+							</div>
+							<div class="related panel pjax" data-title="系列文章"></div>
+							<div class="overview panel" data-title="站点概览">
+								<div class="author" itemprop="author" itemscope itemtype>
+									<img class="image" itemprop="image" alt="{$user_info.nickname}" data-src="{$user_info.headimg}">
+									<p class="name" itemprop="name">{$user_info.nickname}</p>
+									<div class="description" itemprop="description">{$user_info.describe}</div>
+								</div>
+								<nav class="state">
+									<div class="item posts">
+										<a href="/archives">
+											<span class="count">{$news_count}</span>
+											<span class="name">文章</span>
+										</a>
+									</div>
+									<div class="item categories">
+										<a href="/category">
+											<span class="count">{$news_category_count}</span>
+											<span class="name">分类</span>
+										</a>
+									</div>
+									<div class="item tags">
+										<a href="/tag">
+											<span class="count">{$news_mark_count}</span>
+											<span class="name">标签</span>
+										</a>
+									</div>
+								</nav>
+								<div class="social">
+									{foreach $user_info.extra as $key => $value}
+									<span class="exturl item {$value.sign}" data-url="{$value.addressBase64}" title="{$value.address}"><i class="ic i-{$value.class}"></i></span>
+									{/foreach}
+								</div>
+								<ul class="menu">
+									<li class="item">
+										<a href="/" rel="section">
+											<i class="ic i-home"></i>
+											首页
+										</a>
+									</li>
+									<li class="item dropdown">
+										<a href="javascript:void(0);">
+											<i class="ic i-feather"></i>
+											文章
+										</a>
+										<ul class="submenu">
+											<li class="item">
+												<a href="/archives" rel="section">
+													<i class="ic i-list-alt"></i>
+													归档
+												</a>
+											</li>
+											<li class="item">
+												<a href="/category" rel="section">
+													<i class="ic i-th"></i>
+													分类
+												</a>
+											</li>
+											<li class="item">
+												<a href="/tag" rel="section">
+													<i class="ic i-tags"></i>
+													标签
+												</a>
+											</li>
+										</ul>
+									</li>
+									<li class="item">
+										<a href="/friend" rel="section">
+											<i class="ic i-heart"></i>
+											友达
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<ul id="quick">
+						<li class="prev pjax"></li>
+						<li class="up">
+							<i class="ic i-arrow-up"></i>
+						</li>
+						<li class="down">
+							<i class="ic i-arrow-down"></i>
+						</li>
+						<li class="next pjax"></li>
+						<li class="percent"></li>
+					</ul>
+				</div>
+			</div>
 			<div class="dimmer"></div>
 		</div>
 	</main>
-	{include file="common/footer" /}
+	<footer id="footer">
+		<div class="inner">
+			<div class="status">
+				<div class="copyright">
+					{if !empty(sysconf('site_copy'))} {:sysconf('site_copy')} {else}
+					&copy; 2020 –
+					<span itemprop="copyrightYear">{:date('Y')}</span>
+					<span class="with-love"><i class="ic i-star rotate"></i> </span>
+					<span class="author" itemprop="copyrightHolder">{$user_info.nickname}</span>
+					{/if}
+				</div>
+				<div class="powered-by">
+					theme-source
+					<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FtZWhpbWUvaGV4by10aGVtZS1zaG9rYQ==">Shoka</span>
+					@
+					<span class="exturl" data-url="aHR0cHM6Ly9zaG9rYS5sb3N0eXUubWUv">霜月琉璃</span>
+				</div>
+			</div>
+		</div>
+	</footer>
 </div>
-{include file="common/js" /} {include file="common/friend_apply_js" /}
+<script data-config type="text/javascript">
+	var LOCAL = {
+		path: "{if isset($news_info['id'])}{$news_info.id}{/if}",
+		favicon: {
+			show: "这货杀了个回马枪！",
+			hide: "终于走了，休息一下！"
+		},
+		search: {
+			placeholder: "文章搜索",
+			empty: "关于 「 ${query} 」，什么也没搜到",
+			stats: "${time} ms 内找到 ${hits} 条结果"
+		},
+		valine: !0,
+		fancybox: !0,
+		copyright: '复制成功，转载请遵守 <i class="ic i-creative-commons"></i>BY-NC-SA 协议。',
+		ignores: [
+			function (e) {
+				return e.includes("#")
+			},
+			function (e) {
+				return new RegExp(LOCAL.path + "$").test(e)
+			}
+		]
+	}
+</script>
+<script src="{:env('common.resource_base_url')}index/js/jquery-3.5.1.js"></script>
+<script>
+	jQuery("#form .friend_form_button input").on('click', function () {
+		let nodeList = jQuery("#form .friend_form_input input"), verify = true;
+
+		nodeList.each(function (k, v) {
+			let value = v.value, placeholder = v.placeholder;
+			if (value === null || value === "null" || value === undefined || value === "undefined" || value === "") {
+				let t = w.createChild("div", {innerHTML: placeholder, className: "tip"});
+				setTimeout(function () {
+					t.addClass("hide");
+					setTimeout(function () {
+						w.removeChild(t)
+					}, 300)
+				}, 3e3);
+				nodeList[k].focus();
+				verify = false;
+				return verify;
+			}
+		})
+
+		if (verify === true) {
+			let site = nodeList[0].value,
+					owner = nodeList[1].value,
+					url = nodeList[2].value,
+					desc = nodeList[3].value,
+					image = nodeList[4].value,
+					color = nodeList[5].value,
+					list = {site: site, owner: owner, url: url, desc: desc, image: image, color: color};
+
+			jQuery.ajax({
+				url: "{:url('/friend/apply', [], false)}",
+				data: JSON.stringify(list),
+				contentType: "application/json",
+				type: "POST",
+				dataType: "json",
+				success: function (data) {
+					if (data.status === 1) {
+						let t = w.createChild("div", {innerHTML: "我已收到来自 " + owner + "  的请求，请稍候...", className: "tip"});
+						setTimeout(function () {
+							t.addClass("hide");
+							setTimeout(function () {
+								w.removeChild(t)
+							}, 300)
+						}, 3e3);
+						jQuery("#form")[0].reset();
+					}
+				}
+			});
+		}
+	})
+</script>
+<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
+<script src="//cdn.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js,npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js,npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js"></script>
+<script src="{:env('common.resource_base_url')}index/js/app.js?v=0.2.5"></script>
 </body>
 </html>

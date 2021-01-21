@@ -50,6 +50,7 @@ class Article extends Controller
 		$newsInfo['update_date'] = getYearMonthDay($newsInfo['update_at']);
 		$newsInfo['word_number'] = getRealWordNumber($newsInfo['content']);
 		$newsInfo['read_time']   = getReadTime($newsInfo['word_number']);
+		$newsInfo['structure']   = $this->getArticleMenu($this->getStructure($newsInfo['content']));
 
 		if (!empty($newsPrev)) {
 			$categoryInfo = getCategoryInfo($this, $this->newsCategoryTable, $newsPrev['category']);
@@ -91,5 +92,73 @@ class Article extends Controller
 		} catch (Exception $exception) {
 			returnData();
 		}
+	}
+
+	/**
+	 * 获取文章缩略结构
+	 *
+	 * @param $content
+	 *
+	 * @return array
+	 */
+	private function getStructure($content): array
+	{
+		$tags = getTagData($content, 'h', 'id');
+
+		$tagList = [];
+
+		foreach ($tags[count($tags) - 1] as $key => $value) {
+			$tagListTem = [
+				'id'    => $key + 1,
+				'name'  => $tags[count($tags) - 2][$key],
+				'index' => (int) $value,
+				'pid'   => (((int) $value) === 1) ? 0 : false,
+			];
+			array_push($tagList, $tagListTem);
+		}
+
+		foreach ($tagList as $key => &$value) {
+			if ($value['pid'] === false) {
+				$value['pid'] = getPid($tagList, $key, $value['index']);
+			}
+		}
+
+		return listToTree($tagList);
+	}
+
+	/**
+	 * 获取
+	 *
+	 * @param     $tree
+	 * @param int $level
+	 *
+	 * @return string
+	 */
+	private function getArticleMenu($tree, $level = 1): string
+	{
+		if (!empty($tree) && is_array($tree)) {
+
+			$htmlBegin = $level === 1 ? '<ol class="toc">' : '<ol class="toc-child">';
+			$html      = '';
+			$htmlEnd   = '</ol>';
+
+			foreach ($tree as $key => $value) {
+				$toc_number = $key + 1;
+				$htmlChild  = isset($value['_child']) ? $this->getArticleMenu($value['_child'], $level + 1) : '';
+
+				$html .= "
+					<li class='toc-item toc-level-{$level}'>
+						<a class='toc-link' href='#{$value['name']}'>
+							<span class='toc-number'>{$toc_number}.</span>
+							<span class='toc-text'>{$value['name']}</span>
+						</a>
+						{$htmlChild}
+					</li>
+				";
+			}
+
+			return $htmlBegin . $html . $htmlEnd;
+		}
+		return '';
 	}
 }

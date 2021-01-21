@@ -273,3 +273,64 @@ function getReadTime($wordNumber): string
 
 	return $readTime;
 }
+
+function getTagData($html, $tag, $id)
+{
+	$regex = "/<$tag(.*?).*?$id=\"(.*?)\".*?>*<\/$tag(.*?)>/is";
+	preg_match_all($regex, $html, $matches, PREG_PATTERN_ORDER);
+	return $matches;
+}
+
+/**
+ * 获取最近的父id
+ *
+ * @param $array
+ * @param $key
+ * @param $index
+ *
+ * @return mixed
+ */
+function getPid($array, $key, $index)
+{
+	if ($index - $array[$key - 1]['index'] === 1) {
+		return $array[$key - 1]['id'];
+	} else {
+		return getPid($array, $key - 1, $index);
+	}
+}
+
+/**
+ * 列表变大树
+ *
+ * @param        $list
+ * @param string $pk
+ * @param string $pid
+ * @param string $child
+ * @param int    $root
+ *
+ * @return array
+ */
+function listToTree($list, $pk = 'id', $pid = 'pid', $child = '_child', $root = 0): array
+{
+	$tree = [];
+	if (is_array($list)) {
+		$refer = [];
+		foreach ($list as $key => $data) {
+			$refer [$data[$pk]] = &$list[$key];
+		}
+		foreach ($list as $key => $data) {
+			$parentId = $data[$pid];
+			if ($root == $parentId) {
+				$tree[] = &$list[$key];
+			} else {
+				if (isset ($refer[$parentId])) {
+					$parent = &$refer[$parentId];
+
+					$parent[$child][] = &$list[$key];
+				}
+			}
+		}
+	}
+
+	return $tree;
+}

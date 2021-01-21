@@ -22,6 +22,7 @@ Route::get('tag/:tag/:page', 'Tag/search')->pattern(['tag' => '\d+', 'page' => '
 
 //友链
 Route::get('friend', 'Friend/index');
+Route::get('friend/:xx', 'Friend/index');
 
 //测试输出所有font-awesome
 Route::get('font', 'Index/font');
