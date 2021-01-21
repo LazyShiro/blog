@@ -1,11 +1,11 @@
 var e = {
 	version: "0.2.5",
 	hostname: window.location.origin,
-	root: "/static/index/",
+	hostname: window.location.orig
 	statics: document.getElementById('resource_base_url').innerHTML,
 	favicon: {
-		normal: "images/favicon.ico",
-		hidden: "images/failure.ico"
+		normal: "index/images/favicon.ico",
+		hidden: "index/images/failure.ico"
 	},
 	darkmode: false,
 	auto_scroll: true,
