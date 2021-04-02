@@ -9,9 +9,9 @@ use think\App;
 
 class Friend extends Controller
 {
-	protected $friendTable = 'DataFriend';
+	protected string $friendTable = 'DataFriend';
 
-	protected $commonService;
+	protected CommonService $commonService;
 
 	public function __construct(App $app)
 	{

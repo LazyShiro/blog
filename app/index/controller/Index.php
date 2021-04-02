@@ -17,10 +17,10 @@ use think\db\exception\ModelNotFoundException;
  */
 class Index extends Controller
 {
-	protected $newsTable         = 'DataNewsItem';
-	protected $newsCategoryTable = 'DataNewsCategory';
+	protected string $newsTable         = 'DataNewsItem';
+	protected string $newsCategoryTable = 'DataNewsCategory';
 
-	protected $userService;
+	protected CommonService $userService;
 
 	public function __construct(App $app)
 	{
@@ -65,7 +65,7 @@ class Index extends Controller
 		}
 		unset($value);
 
-		$this->assign('title', '');
+		$this->assign('title');
 		$this->assign('news_top_list', $newsTopList);
 		$this->assign('news_list', $newsList);
 

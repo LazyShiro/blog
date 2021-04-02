@@ -9,9 +9,9 @@ use think\App;
 
 class Archives extends Controller
 {
-	protected $newsTable = 'DataNewsItem';
+	protected string $newsTable = 'DataNewsItem';
 
-	protected $commonService;
+	protected CommonService $commonService;
 
 	public function __construct(App $app)
 	{
@@ -46,7 +46,7 @@ class Archives extends Controller
 
 		$this->commonService->getBaseInfo($this);
 
-		$this->assign('title', "归档 | ");
+		$this->assign('title', '归档 | ');
 		$this->assign('news_count', count($newsList));
 		$this->assign('archives_list', $archivesList);
 
@@ -64,7 +64,7 @@ class Archives extends Controller
 
 		$condition = $year . ($month ? '-' . $month : '');
 		try {
-			$newsList = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['create_at', 'like', "{$condition}%"]])->field('id,name,create_at')->order(['id' => 'desc'])->limit(10)->select()->toArray();
+			$newsList = $this->app->db->name($this->newsTable)->where([['status', '=', 1], ['deleted', '=', 0], ['create_at', 'like', "{$condition}%"]])->field('id,name,create_at')->order(['id' => 'desc'])->select()->toArray();
 		} catch (Exception $exception) {
 			exit('在维护，懒得写页面了6');
 		}
@@ -77,7 +77,7 @@ class Archives extends Controller
 			$value['day']   = getDay($value['create_at']);
 		}
 
-		$this->assign('title', $year . " 年" . (!empty($month) ? " / {$month} 月" : '') . " - 归档 | ");
+		$this->assign('title', $year . ' 年' . (!empty($month) ? " / {$month} 月" : '') . ' - 归档 | ');
 		$this->assign('year', $year);
 		$this->assign('month', $month);
 		$this->assign('news_list', $newsList);

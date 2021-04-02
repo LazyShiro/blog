@@ -12,11 +12,11 @@ use think\db\exception\ModelNotFoundException;
 
 class Tag extends Controller
 {
-	protected $newsTable         = 'DataNewsItem';
-	protected $newsTagTable      = 'DataNewsMark';
-	protected $newsCategoryTable = 'DataNewsCategory';
+	protected string $newsTable         = 'DataNewsItem';
+	protected string $newsTagTable      = 'DataNewsMark';
+	protected string $newsCategoryTable = 'DataNewsCategory';
 
-	protected $commonService;
+	protected CommonService $commonService;
 
 	public function __construct(App $app)
 	{

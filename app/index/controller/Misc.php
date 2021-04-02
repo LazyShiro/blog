@@ -17,14 +17,14 @@ class Misc extends Controller
 		$condition = param('js');
 
 		//js数组
-		$jssArray = explode(",", $condition);
+		$jssArray = explode(',', $condition);
 
 		//根目录
 		$root   = $_SERVER['DOCUMENT_ROOT'];
 		$client = new Client();
 
 		//初始化js内容
-		$content = "";
+		$content = '';
 		foreach ($jssArray as $value) {
 			//获取对应的js内容
 			//获取对应的js内容
@@ -33,7 +33,7 @@ class Misc extends Controller
 				try {
 					$response = $client->request('GET', $value, [
 						'headers' => [
-							'Referer' => $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['SERVER_NAME'] . "/",
+							'Referer' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . '/',
 						],
 					]);
 				} catch (GuzzleException $e) {
@@ -65,17 +65,17 @@ class Misc extends Controller
 		$client = new Client();
 
 		//css数组
-		$cssArray = explode(",", $condition);
+		$cssArray = explode(',', $condition);
 
 		//初始化css内容
-		$content = "";
+		$content = '';
 		foreach ($cssArray as $value) {
 			//获取对应的js内容
 			if (strpos($value, 'http') !== false) {
 				try {
 					$response = $client->request('GET', $value, [
 						'headers' => [
-							'Referer' => $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['SERVER_NAME'] . "/",
+							'Referer' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . '/',
 						],
 					]);
 				} catch (GuzzleException $e) {
