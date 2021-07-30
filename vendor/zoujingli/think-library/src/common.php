@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | Library for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -19,7 +19,11 @@ use think\admin\service\QueueService;
 use think\admin\service\SystemService;
 use think\admin\service\TokenService;
 use think\admin\Storage;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\db\Query;
+use think\Model;
 
 if (!function_exists('p')) {
     /**
@@ -27,10 +31,11 @@ if (!function_exists('p')) {
      * @param mixed $data 输出的数据
      * @param boolean $new 强制替换文件
      * @param null|string $file 保存文件名称
+     * @return false|int
      */
-    function p($data, $new = false, $file = null)
+    function p($data, bool $new = false, ?string $file = null)
     {
-        SystemService::instance()->putDebug($data, $new, $file);
+        return SystemService::instance()->putDebug($data, $new, $file);
     }
 }
 if (!function_exists('auth')) {
@@ -54,7 +59,7 @@ if (!function_exists('sysuri')) {
      * @param boolean|string $domain 域名
      * @return string
      */
-    function sysuri(string $url = '', array $vars = [], $suffix = true, $domain = false)
+    function sysuri(string $url = '', array $vars = [], $suffix = true, $domain = false): string
     {
         return SystemService::instance()->sysuri($url, $vars, $suffix, $domain);
     }
@@ -65,11 +70,11 @@ if (!function_exists('sysconf')) {
      * @param string $name 参数名称
      * @param mixed $value 参数内容
      * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
-    function sysconf($name = '', $value = null)
+    function sysconf(string $name = '', $value = null)
     {
         if (is_null($value) && is_string($name)) {
             return SystemService::instance()->get($name);
@@ -84,9 +89,9 @@ if (!function_exists('sysdata')) {
      * @param string $name 数据名称
      * @param mixed $value 数据内容
      * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     function sysdata(string $name, $value = null)
     {
@@ -108,9 +113,9 @@ if (!function_exists('sysqueue')) {
      * @param integer $loops 循环等待时间
      * @return string
      * @throws \think\admin\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     function sysqueue(string $title, string $command, int $later = 0, array $data = [], int $rscript = 1, int $loops = 0): string
     {
@@ -136,7 +141,7 @@ if (!function_exists('sysoplog')) {
      * @param string $content 日志内容
      * @return boolean
      */
-    function sysoplog(string $action, string $content)
+    function sysoplog(string $action, string $content): bool
     {
         return SystemService::instance()->setOplog($action, $content);
     }
@@ -156,6 +161,9 @@ if (!function_exists('str2arr')) {
         if (is_array($allow)) foreach ($data as $key => $item) {
             if (!in_array($item, $allow)) unset($data[$key]);
         }
+        foreach ($data as $key => $item) {
+            if ($item === '') unset($data[$key]);
+        }
         return $data;
     }
 }
@@ -167,10 +175,13 @@ if (!function_exists('arr2str')) {
      * @param null|array $allow 限定规则
      * @return string
      */
-    function arr2str(array $data, string $separ = ',', ?array $allow = null)
+    function arr2str(array $data, string $separ = ',', ?array $allow = null): string
     {
         if (is_array($allow)) foreach ($data as $key => $item) {
             if (!in_array($item, $allow)) unset($data[$key]);
+        }
+        foreach ($data as $key => $item) {
+            if ($item === '') unset($data[$key]);
         }
         return $separ . join($separ, $data) . $separ;
     }
@@ -222,7 +233,7 @@ if (!function_exists('debase64url')) {
      */
     function debase64url(string $string): string
     {
-        return base64_decode(str_pad(strtr($string, '-_', '+/'), strlen($string) % 4, '=', STR_PAD_RIGHT));
+        return base64_decode(str_pad(strtr($string, '-_', '+/'), strlen($string) % 4, '='));
     }
 }
 if (!function_exists('http_get')) {
@@ -254,14 +265,14 @@ if (!function_exists('http_post')) {
 if (!function_exists('data_save')) {
     /**
      * 数据增量保存
-     * @param Query|string $dbQuery
+     * @param Model|Query|string $dbQuery
      * @param array $data 需要保存或更新的数据
      * @param string $key 条件主键限制
      * @param array $where 其它的where条件
-     * @return boolean
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @return boolean|integer
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     function data_save($dbQuery, array $data, string $key = 'id', array $where = [])
     {
@@ -290,9 +301,9 @@ if (!function_exists('format_datetime')) {
      * 日期格式标准输出
      * @param int|string $datetime 输入日期
      * @param string $format 输出格式
-     * @return false|string
+     * @return string
      */
-    function format_datetime($datetime, $format = 'Y年m月d日 H:i:s')
+    function format_datetime($datetime, string $format = 'Y年m月d日 H:i:s'): string
     {
         if (empty($datetime)) return '-';
         if (is_numeric($datetime)) {
@@ -310,7 +321,7 @@ if (!function_exists('down_file')) {
      * @param integer $expire 强制本地存储时间
      * @return string
      */
-    function down_file(string $source, bool $force = false, int $expire = 0)
+    function down_file(string $source, bool $force = false, int $expire = 0): string
     {
         return Storage::down($source, $force, $expire)['url'] ?? $source;
     }

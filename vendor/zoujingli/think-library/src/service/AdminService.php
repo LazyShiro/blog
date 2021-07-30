@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -17,8 +17,12 @@ declare (strict_types=1);
 
 namespace think\admin\service;
 
+use ReflectionException;
 use think\admin\extend\DataExtend;
 use think\admin\Service;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 系统权限管理服务
@@ -43,7 +47,16 @@ class AdminService extends Service
      */
     public function isSuper(): bool
     {
-        return $this->getUserName() === 'admin';
+        return $this->getUserName() === $this->getSuperName();
+    }
+
+    /**
+     * 获取超级用户账号
+     * @return string
+     */
+    public function getSuperName(): string
+    {
+        return $this->app->config->get('app.super_user', 'admin');
     }
 
     /**
@@ -69,7 +82,7 @@ class AdminService extends Service
      * --- 需要读取缓存或扫描所有节点
      * @param null|string $node
      * @return boolean
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function check(?string $node = ''): bool
     {
@@ -95,7 +108,7 @@ class AdminService extends Service
      * 获取授权节点列表
      * @param array $checkeds
      * @return array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function getTree(array $checkeds = []): array
     {
@@ -121,11 +134,11 @@ class AdminService extends Service
      * 初始化用户权限
      * @param boolean $force 强刷权限
      * @return $this
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
-    public function apply(bool $force = false)
+    public function apply(bool $force = false): AdminService
     {
         if ($force) $this->clearCache();
         if (($uid = $this->app->session->get('user.id'))) {
@@ -145,7 +158,7 @@ class AdminService extends Service
      * 清理节点缓存
      * @return $this
      */
-    public function clearCache()
+    public function clearCache(): AdminService
     {
         TokenService::instance()->clearCache();
         $this->app->cache->delete('SystemAuthNode');

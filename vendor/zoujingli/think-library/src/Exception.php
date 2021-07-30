@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | Library for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -43,21 +43,21 @@ class Exception extends \Exception
     }
 
     /**
-     * 设置异常停止数据
-     * @param mixed $data
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-    }
-
-    /**
      * 获取异常停止数据
      * @return mixed
      */
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * 设置异常停止数据
+     * @param mixed $data
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
     }
 
 }

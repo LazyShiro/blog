@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | Library for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -34,12 +34,12 @@ class TokenHelper extends Helper
      * @param boolean $return
      * @return boolean
      */
-    public function init($return = false)
+    public function init(bool $return = false): bool
     {
         $this->class->csrf_state = true;
         if ($this->app->request->isPost() && !TokenService::instance()->checkFormToken()) {
             if ($return) return false;
-            $this->class->error($this->class->csrf_message);
+            $this->class->error($this->class->csrf_message ?: lang('think_library_csrf_error'));
         } else {
             return true;
         }

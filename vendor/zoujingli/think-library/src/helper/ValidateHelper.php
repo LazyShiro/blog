@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | Library for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -32,7 +32,7 @@ class ValidateHelper extends Helper
      * @param array $rules 验证规则（ 验证信息数组 ）
      * @param string|array $input 输入内容 ( post. 或 get. )
      * @param callable|null $callable 异常处理操作
-     * @return array|void
+     * @return array
      *  age.require => message // 最大值限定
      *  age.between:1,120 => message // 范围限定
      *  name.require => message // 必填内容

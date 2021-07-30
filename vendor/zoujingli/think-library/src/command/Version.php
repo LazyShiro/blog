@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | Library for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -37,10 +37,11 @@ class Version extends Command
     /**
      * @param Input $input
      * @param Output $output
+     * @return void
      */
     protected function execute(Input $input, Output $output)
     {
-        $output->writeln('ThinkPHP ' . $this->app->version());
-        $output->writeln('ThinkLIB ' . $this->process->version());
+        $output->writeln("ThinkPHPCore {$this->app->version()}");
+        $output->writeln("ThinkLibrary {$this->process->version()}");
     }
 }

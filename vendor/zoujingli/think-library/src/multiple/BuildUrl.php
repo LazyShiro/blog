@@ -16,7 +16,8 @@ declare (strict_types=1);
 
 namespace think\admin\multiple;
 
-use think\helper\Str;
+use InvalidArgumentException;
+use think\admin\service\NodeService;
 use think\route\Url;
 
 /**
@@ -42,27 +43,33 @@ class BuildUrl extends Url
         } elseif (0 === strpos($url, '@')) {
             $url = substr($url, 1);
         } elseif ('' === $url) {
-            $url = $this->app->http->getName() . '/' . $request->controller() . '/' . $request->action();
+            $node = NodeService::instance()->getCurrent();
+            $url = $this->app->route->buildUrl($node)->suffix(false)->domain(false)->build();
         } else {
             $path = explode('/', $url);
             $action = empty($path) ? $request->action() : array_pop($path);
-            $controller = empty($path) ? $request->controller() : array_pop($path);
-            $app = empty($path) ? $this->app->http->getName() : array_pop($path);
-            $url = Str::snake($controller) . '/' . $action;
+            $contrl = empty($path) ? $request->controller() : array_pop($path);
+            $module = empty($path) ? $this->app->http->getName() : array_pop($path);
+            // 拼装新的链接地址
+            $url = NodeService::nameTolower($contrl) . '/' . $action;
             $bind = $this->app->config->get('app.domain_bind', []);
-            if ($key = array_search($app, $bind)) {
-                isset($bind[$_SERVER['SERVER_NAME']]) && $domain = $_SERVER['SERVER_NAME'];
+            if ($key = array_search($module, $bind)) {
+                if (isset($bind[$_SERVER['SERVER_NAME']])) $domain = $_SERVER['SERVER_NAME'];
                 $domain = is_bool($domain) ? $key : $domain;
-            } elseif ($key = array_search($app, $this->app->config->get('app.app_map', []))) {
+            } elseif ($key = array_search($module, $this->app->config->get('app.app_map', []))) {
                 $url = $key . '/' . $url;
             } else {
-                $url = $app . '/' . $url;
+                $url = $module . '/' . $url;
             }
         }
         return $url;
     }
 
-    public function build()
+    /**
+     * Build URL
+     * @return string
+     */
+    public function build(): string
     {
         $url = $this->url;
         $vars = $this->vars;
@@ -95,7 +102,7 @@ class BuildUrl extends Url
         }
         if ($url) {
             $checkDomain = $domain && is_string($domain) ? $domain : null;
-            $checkName = isset($name) ? $name : $url . (isset($info['query']) ? '?' . $info['query'] : '');
+            $checkName = $name ?? $url . (isset($info['query']) ? '?' . $info['query'] : '');
             $rule = $this->route->getName($checkName, $checkDomain);
             if (empty($rule) && isset($info['query'])) {
                 $rule = $this->route->getName($url, $checkDomain);
@@ -112,7 +119,7 @@ class BuildUrl extends Url
                 $url = $this->app->http->getName() . '/' . $url;
             }
         } elseif (!empty($rule) && isset($name)) {
-            throw new \InvalidArgumentException('route name not exists:' . $name);
+            throw new InvalidArgumentException('route name not exists:' . $name);
         } else {
             // 检测URL绑定
             $bind = $this->route->getDomainBind($domain && is_string($domain) ? $domain : null);
@@ -152,12 +159,6 @@ class BuildUrl extends Url
                 $file = 'index.php';
             }
         }
-        /*=====- 插件 Addons URL 处理 - 开始 -=====*/
-        if (preg_match("#^{$depr}addons-{$app}({$depr}|\.|$)#i", $uri)) {
-            [$pre, $suf] = explode($depr, $url . $depr, 2);
-            if ($pre === $app) $url = rtrim("addons-{$app}{$depr}{$suf}", $depr);
-        }
-        /*=====- 插件 Addons URL 处理 - 结束 -=====*/
         $url = rtrim($file, '/') . '/' . ltrim($url, '/');
         // URL后缀
         if ('/' == substr($url, -1) || '' == $url) {

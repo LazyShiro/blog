@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -35,8 +35,8 @@ class CodeExtend
     {
         $numbs = '0123456789';
         $chars = 'abcdefghijklmnopqrstuvwxyz';
-        if (intval($type) === 1) $chars = $numbs;
-        if (intval($type) === 3) $chars = "{$numbs}{$chars}";
+        if ($type === 1) $chars = $numbs;
+        if ($type === 3) $chars = "{$numbs}{$chars}";
         $code = $prefix . $chars[rand(1, strlen($chars) - 1)];
         while (strlen($code) < $size) $code .= $chars[rand(0, strlen($chars) - 1)];
         return $code;

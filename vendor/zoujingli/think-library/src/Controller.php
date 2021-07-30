@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | Library for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -17,6 +17,7 @@ declare (strict_types=1);
 
 namespace think\admin;
 
+use stdClass;
 use think\admin\helper\DeleteHelper;
 use think\admin\helper\FormHelper;
 use think\admin\helper\PageHelper;
@@ -26,11 +27,12 @@ use think\admin\helper\TokenHelper;
 use think\admin\helper\ValidateHelper;
 use think\admin\service\QueueService;
 use think\App;
+use think\db\BaseQuery;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
-use think\db\Query;
 use think\exception\HttpResponseException;
+use think\Model;
 use think\Request;
 
 /**
@@ -38,7 +40,7 @@ use think\Request;
  * Class Controller
  * @package think\admin
  */
-abstract class Controller extends \stdClass
+abstract class Controller extends stdClass
 {
 
     /**
@@ -54,19 +56,13 @@ abstract class Controller extends \stdClass
     public $request;
 
     /**
-     * 控制器中间键
-     * @var array
-     */
-    protected $middleware = [];
-
-    /**
      * 表单CSRF验证状态
      * @var boolean
      */
     public $csrf_state = false;
 
     /**
-     * 表单CSRF验证失败提示
+     * 表单CSRF验证消息
      * @var string
      */
     public $csrf_message;
@@ -83,7 +79,6 @@ abstract class Controller extends \stdClass
         if (in_array($this->request->action(), get_class_methods(__CLASS__))) {
             $this->error('Access without permission.');
         }
-        $this->csrf_message = lang('think_library_csrf_error');
         $this->initialize();
     }
 
@@ -98,11 +93,11 @@ abstract class Controller extends \stdClass
      * 返回失败的操作
      * @param mixed $info 消息内容
      * @param mixed $data 返回数据
-     * @param integer $code 返回代码
+     * @param mixed $code 返回代码
      */
     public function error($info, $data = '{-null-}', $code = 0): void
     {
-        if ($data === '{-null-}') $data = new \stdClass();
+        if ($data === '{-null-}') $data = new stdClass();
         throw new HttpResponseException(json([
             'code' => $code, 'info' => $info, 'data' => $data,
         ]));
@@ -112,14 +107,14 @@ abstract class Controller extends \stdClass
      * 返回成功的操作
      * @param mixed $info 消息内容
      * @param mixed $data 返回数据
-     * @param integer $code 返回代码
+     * @param mixed $code 返回代码
      */
     public function success($info, $data = '{-null-}', $code = 1): void
     {
         if ($this->csrf_state) {
             TokenHelper::instance()->clear();
         }
-        if ($data === '{-null-}') $data = new \stdClass();
+        if ($data === '{-null-}') $data = new stdClass();
         throw new HttpResponseException(json([
             'code' => $code, 'info' => $info, 'data' => $data,
         ]));
@@ -130,7 +125,7 @@ abstract class Controller extends \stdClass
      * @param string $url 跳转链接
      * @param integer $code 跳转代码
      */
-    public function redirect(string $url, $code = 301): void
+    public function redirect(string $url, int $code = 301): void
     {
         throw new HttpResponseException(redirect($url, $code));
     }
@@ -157,7 +152,7 @@ abstract class Controller extends \stdClass
      * @param mixed $value 变量的值
      * @return $this
      */
-    public function assign($name, $value = '')
+    public function assign($name, $value = ''): Controller
     {
         if (is_string($name)) {
             $this->$name = $value;
@@ -174,13 +169,14 @@ abstract class Controller extends \stdClass
      * @param string $name 回调方法名称
      * @param mixed $one 回调引用参数1
      * @param mixed $two 回调引用参数2
+     * @param mixed $thr 回调引用参数3
      * @return boolean
      */
-    public function callback(string $name, &$one = [], &$two = []): bool
+    public function callback(string $name, &$one = [], &$two = [], &$thr = []): bool
     {
-        if (is_callable($name)) return call_user_func($name, $this, $one, $two);
+        if (is_callable($name)) return call_user_func($name, $this, $one, $two, $thr);
         foreach (["_{$this->app->request->action()}{$name}", $name] as $method) {
-            if (method_exists($this, $method) && false === $this->$method($one, $two)) {
+            if (method_exists($this, $method) && false === $this->$method($one, $two, $thr)) {
                 return false;
             }
         }
@@ -189,7 +185,7 @@ abstract class Controller extends \stdClass
 
     /**
      * 快捷查询逻辑器
-     * @param string|Query $dbQuery
+     * @param Model|BaseQuery|string $dbQuery
      * @param array|string|null $input
      * @return QueryHelper
      */
@@ -200,7 +196,7 @@ abstract class Controller extends \stdClass
 
     /**
      * 快捷分页逻辑器
-     * @param string|Query $dbQuery
+     * @param Model|BaseQuery|string $dbQuery
      * @param boolean $page 是否启用分页
      * @param boolean $display 是否渲染模板
      * @param boolean|integer $total 集合分页记录数
@@ -211,14 +207,14 @@ abstract class Controller extends \stdClass
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    protected function _page($dbQuery, bool $page = true, bool $display = true, $total = false, int $limit = 0, string $template = '')
+    protected function _page($dbQuery, bool $page = true, bool $display = true, $total = false, int $limit = 0, string $template = ''): array
     {
         return PageHelper::instance()->init($dbQuery, $page, $display, $total, $limit, $template);
     }
 
     /**
      * 快捷表单逻辑器
-     * @param string|Query $dbQuery
+     * @param Model|BaseQuery|string $dbQuery
      * @param string $template 模板名称
      * @param string $field 指定数据对象主键
      * @param array $where 额外更新条件
@@ -239,34 +235,34 @@ abstract class Controller extends \stdClass
      * @param string|array $type 输入方式 ( post. 或 get. )
      * @return array
      */
-    protected function _vali(array $rules, $type = '')
+    protected function _vali(array $rules, $type = ''): array
     {
         return ValidateHelper::instance()->init($rules, $type);
     }
 
     /**
      * 快捷更新逻辑器
-     * @param string|Query $dbQuery
+     * @param Model|BaseQuery|string $dbQuery
      * @param array $data 表单扩展数据
      * @param string $field 数据对象主键
      * @param array $where 额外更新条件
      * @return boolean
      * @throws DbException
      */
-    protected function _save($dbQuery, array $data = [], string $field = '', array $where = [])
+    protected function _save($dbQuery, array $data = [], string $field = '', array $where = []): bool
     {
         return SaveHelper::instance()->init($dbQuery, $data, $field, $where);
     }
 
     /**
      * 快捷删除逻辑器
-     * @param string|Query $dbQuery
+     * @param Model|BaseQuery|string $dbQuery
      * @param string $field 数据对象主键
      * @param array $where 额外更新条件
      * @return boolean|null
      * @throws DbException
      */
-    protected function _delete($dbQuery, string $field = '', array $where = [])
+    protected function _delete($dbQuery, string $field = '', array $where = []): ?bool
     {
         return DeleteHelper::instance()->init($dbQuery, $field, $where);
     }
@@ -276,7 +272,7 @@ abstract class Controller extends \stdClass
      * @param boolean $return 是否返回结果
      * @return boolean
      */
-    protected function _applyFormToken(bool $return = false)
+    protected function _applyFormToken(bool $return = false): bool
     {
         return TokenHelper::instance()->init($return);
     }

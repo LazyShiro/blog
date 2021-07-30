@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -45,18 +45,16 @@ abstract class Service
 
     /**
      * 初始化服务
-     * @return static
      */
     protected function initialize()
     {
-        return $this;
     }
 
     /**
      * 静态实例对象
      * @param array $var 实例参数
      * @param boolean $new 创建新实例
-     * @return static
+     * @return static|mixed
      */
     public static function instance(array $var = [], bool $new = false)
     {

@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | Library for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -19,8 +19,9 @@ namespace think\admin;
 
 use think\App;
 use think\Container;
-use think\Db;
+use think\db\BaseQuery;
 use think\db\Query;
+use think\Model;
 
 /**
  * 控制器挂件
@@ -36,7 +37,13 @@ abstract class Helper
     public $app;
 
     /**
-     * 数据库实例
+     * 数据模型实例
+     * @var Model
+     */
+    public $model;
+
+    /**
+     * 数据查询实例
      * @var Query
      */
     public $query;
@@ -60,12 +67,25 @@ abstract class Helper
 
     /**
      * 获取数据库对象
-     * @param string|Query $dbQuery
-     * @return Db|Query
+     * @param Model|BaseQuery|string $dbQuery
+     * @return Query|mixed
      */
     protected function buildQuery($dbQuery)
     {
-        return is_string($dbQuery) ? $this->app->db->name($dbQuery) : $dbQuery;
+        if (is_string($dbQuery)) {
+            if (stripos($dbQuery, '\\') !== false) {
+                $this->model = new $dbQuery;
+                $this->query = $this->model->db();
+            } else {
+                $this->query = $this->app->db->name($dbQuery);
+            }
+        } elseif ($dbQuery instanceof Model) {
+            $this->model = $dbQuery;
+            $this->query = $this->model->db();
+        } elseif ($dbQuery instanceof BaseQuery) {
+            $this->query = $dbQuery;
+        }
+        return $this->query;
     }
 
     /**

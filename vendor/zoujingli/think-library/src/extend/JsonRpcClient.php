@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | Library for ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -55,7 +55,7 @@ class JsonRpcClient
      * @return mixed
      * @throws Exception
      */
-    public function __call(string $method, array $params)
+    public function __call(string $method, array $params = [])
     {
         // Performs the HTTP POST
         $options = [
@@ -74,8 +74,7 @@ class JsonRpcClient
         if ($fp = fopen($this->proxy, 'r', false, stream_context_create($options))) {
             $response = '';
             while ($row = fgets($fp)) $response .= trim($row) . "\n";
-            fclose($fp);
-            $response = json_decode($response, true);
+            [, $response] = [fclose($fp), json_decode($response, true)];
         } else {
             throw new Exception("无法连接到 {$this->proxy}");
         }

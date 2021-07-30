@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -35,9 +35,12 @@ class DataExtend
      */
     public static function arr2tree(array $list, string $cid = 'id', string $pid = 'pid', string $sub = 'sub'): array
     {
-        [$tree, $tmp] = [[], array_combine(array_column($list, $cid), array_values($list))];
-        foreach ($list as $vo) isset($vo[$pid]) && isset($tmp[$vo[$pid]]) ? $tmp[$vo[$pid]][$sub][] = &$tmp[$vo[$cid]] : $tree[] = &$tmp[$vo[$cid]];
-        unset($tmp, $list);
+        [$tree, $temp] = [[], array_combine(array_column($list, $cid), array_values($list))];
+        foreach ($list as $vo) if (isset($vo[$pid]) && isset($temp[$vo[$pid]])) {
+            $temp[$vo[$pid]][$sub][] = &$temp[$vo[$cid]];
+        } else {
+            $tree[] = &$temp[$vo[$cid]];
+        }
         return $tree;
     }
 
@@ -62,7 +65,9 @@ class DataExtend
             $sub = $attr['sub'];
             unset($attr['sub']);
             $tree[] = $attr;
-            if (!empty($sub)) $tree = array_merge($tree, static::arr2table($sub, $cid, $pid, $cpath, $attr[$cpath]));
+            if (!empty($sub)) {
+                $tree = array_merge($tree, static::arr2table($sub, $cid, $pid, $cpath, $attr[$cpath]));
+            }
         }
         return $tree;
     }

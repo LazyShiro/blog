@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -17,6 +17,9 @@ declare (strict_types=1);
 
 namespace think\admin\service;
 
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
 use think\admin\Service;
 
 /**
@@ -31,7 +34,7 @@ class NodeService extends Service
      * @param string $name
      * @return string
      */
-    public function nameTolower(string $name): string
+    public static function nameTolower(string $name): string
     {
         $dots = [];
         foreach (explode('.', strtr($name, '/', '.')) as $dot) {
@@ -47,11 +50,7 @@ class NodeService extends Service
      */
     public function getCurrent(string $type = ''): string
     {
-        $space = $this->app->getNamespace();
         $prefix = strtolower($this->app->http->getName());
-        if (preg_match("|\\\\addons\\\\{$prefix}$|", $space)) {
-            $prefix = "addons-{$prefix}";
-        }
         // 获取应用前缀节点
         if ($type === 'module') return $prefix;
         // 获取控制器前缀节点
@@ -101,7 +100,7 @@ class NodeService extends Service
      * 获取所有控制器入口
      * @param boolean $force
      * @return array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function getMethods(bool $force = false): array
     {
@@ -120,11 +119,10 @@ class NodeService extends Service
             $name = substr($file, strlen(strtr($this->app->getRootPath(), '\\', '/')) - 1);
             if (preg_match("|^([\w/]+)/(\w+)/controller/(.+)\.php$|i", $name, $matches)) {
                 [, $namespace, $appname, $classname] = $matches;
-                $addons = preg_match('|/addons$|', $namespace) ? 'addons-' : '';
-                $class = new \ReflectionClass(strtr("{$namespace}/{$appname}/controller/{$classname}", '/', '\\'));
-                $prefix = strtolower(strtr("{$addons}{$appname}/{$this->nameTolower($classname)}", '\\', '/'));
+                $class = new ReflectionClass(strtr("{$namespace}/{$appname}/controller/{$classname}", '/', '\\'));
+                $prefix = strtolower(strtr("{$appname}/{$this->nameTolower($classname)}", '\\', '/'));
                 $data[$prefix] = $this->_parseComment($class->getDocComment() ?: '', $classname);
-                foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+                foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
                     if (in_array($metname = $method->getName(), $ignores)) continue;
                     $data[strtolower("{$prefix}/{$metname}")] = $this->_parseComment($method->getDocComment() ?: '', $metname);
                 }
@@ -160,18 +158,16 @@ class NodeService extends Service
      * @param null|string $ext 文件后缀
      * @return array
      */
-    public function scanDirectory(string $path, array $data = [], $ext = 'php'): array
+    public function scanDirectory(string $path, array $data = [], ?string $ext = 'php'): array
     {
-        if (file_exists($path)) {
-            if (is_file($path)) {
-                $data[] = strtr($path, '\\', '/');
-            } elseif (is_dir($path)) foreach (scandir($path) as $item) if ($item[0] !== '.') {
-                $real = rtrim($path, '\\/') . DIRECTORY_SEPARATOR . $item;
-                if (is_readable($real)) if (is_dir($real)) {
-                    $data = $this->scanDirectory($real, $data, $ext);
-                } elseif (is_file($real) && (is_null($ext) || pathinfo($real, 4) === $ext)) {
-                    $data[] = strtr($real, '\\', '/');
-                }
+        if (file_exists($path)) if (is_file($path)) {
+            $data[] = strtr($path, '\\', '/');
+        } elseif (is_dir($path)) foreach (scandir($path) as $item) if ($item[0] !== '.') {
+            $real = rtrim($path, '\\/') . DIRECTORY_SEPARATOR . $item;
+            if (is_readable($real)) if (is_dir($real)) {
+                $data = $this->scanDirectory($real, $data, $ext);
+            } elseif (is_file($real) && (is_null($ext) || pathinfo($real, 4) === $ext)) {
+                $data[] = strtr($real, '\\', '/');
             }
         }
         return $data;

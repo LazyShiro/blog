@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -35,7 +35,9 @@ class ExcelExtend
         header('Content-Type: application/octet-stream');
         header("Content-Disposition: attachment; filename=" . iconv('utf-8', 'gbk//TRANSLIT', $name));
         $handle = fopen('php://output', 'w');
-        foreach ($headers as $key => $value) $headers[$key] = iconv("utf-8", "gbk//TRANSLIT", $value);
+        foreach ($headers as $key => $value) {
+            $headers[$key] = iconv("utf-8", "gbk//TRANSLIT", $value);
+        }
         fputcsv($handle, $headers);
         if (is_resource($handle)) {
             fclose($handle);

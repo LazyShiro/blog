@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | ThinkAdmin
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2020 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2021 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
 // | 官方网站: https://gitee.com/zoujingli/ThinkLibrary
 // +----------------------------------------------------------------------
@@ -17,10 +17,15 @@ declare (strict_types=1);
 
 namespace think\admin\service;
 
+use Exception;
 use think\admin\Service;
 use think\App;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\db\Query;
 use think\helper\Str;
+use think\Model;
 
 /**
  * 系统参数管理服务
@@ -45,16 +50,16 @@ class SystemService extends Service
     /**
      * 设置配置数据
      * @param string $name 配置名称
-     * @param string $value 配置内容
-     * @return integer
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @param mixed $value 配置内容
+     * @return integer|string
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function set(string $name, $value = '')
     {
         $this->data = [];
-        [$type, $field] = $this->_parse($name, 'base');
+        [$type, $field] = $this->_parse($name);
         if (is_array($value)) {
             $count = 0;
             foreach ($value as $kk => $vv) {
@@ -75,9 +80,9 @@ class SystemService extends Service
      * @param string $name
      * @param string $default
      * @return array|mixed|string
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function get(string $name = '', string $default = '')
     {
@@ -86,7 +91,7 @@ class SystemService extends Service
                 $this->data[$item['type']][$item['name']] = $item['value'];
             });
         }
-        [$type, $field, $outer] = $this->_parse($name, 'base');
+        [$type, $field, $outer] = $this->_parse($name);
         if (empty($name)) {
             return $this->data;
         } elseif (isset($this->data[$type])) {
@@ -102,31 +107,42 @@ class SystemService extends Service
 
     /**
      * 数据增量保存
-     * @param Query|string $dbQuery 数据查询对象
+     * @param Model|Query|string $query 数据查询对象
      * @param array $data 需要保存的数据
      * @param string $key 更新条件查询主键
-     * @param array $where 额外更新查询条件
+     * @param array $map 额外更新查询条件
      * @return boolean|integer 失败返回 false, 成功返回主键值或 true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
-    public function save($dbQuery, array $data, string $key = 'id', array $where = [])
+    public function save($query, array $data, string $key = 'id', array $map = [])
     {
-        $val = $data[$key] ?? null;
-        $query = (is_string($dbQuery) ? $this->app->db->name($dbQuery) : $dbQuery)->master()->strict(false)->where($where);
-        if (empty($where[$key])) is_string($val) && strpos($val, ',') !== false ? $query->whereIn($key, explode(',', $val)) : $query->where([$key => $val]);
-        return is_array($info = (clone $query)->find()) && !empty($info) ? ($query->update($data) !== false ? ($info[$key] ?? true) : false) : $query->insertGetId($data);
+        $query = is_string($query) ? $this->app->db->name($query) : ($query instanceof Model ? $query->db() : $query);
+        if (!$query instanceof Query) throw new ModelNotFoundException('数据库操作对象异常！');
+        [$value] = [$data[$key] ?? null, $query->master()->strict(false)->where($map)];
+        if (empty($map[$key])) if (is_string($value) && strpos($value, ',') !== false) {
+            $query->whereIn($key, str2arr($value));
+        } else {
+            $query->where([$key => $value]);
+        }
+        if (($info = (clone $query)->find()) && !empty($info)) {
+            if ($info instanceof Model) $info = $info->toArray();
+            $query->update($data);
+            return $info[$key] ?? true;
+        } else {
+            return $query->insertGetId($data);
+        }
     }
 
     /**
      * 解析缓存名称
      * @param string $rule 配置名称
-     * @param string $type 配置类型
      * @return array
      */
-    private function _parse(string $rule, string $type = 'base'): array
+    private function _parse(string $rule): array
     {
+        $type = 'base';
         if (stripos($rule, '.') !== false) {
             [$type, $rule] = explode('.', $rule, 2);
         }
@@ -144,10 +160,19 @@ class SystemService extends Service
      */
     public function sysuri(string $url = '', array $vars = [], $suffix = true, $domain = false): string
     {
-        [$hm, $bs] = [$this->app->config->get('route.url_html_suffix', 'html'), $this->app->route->buildUrl('@')->suffix(false)->domain($domain)->build()];
-        [$d1, $d2, $d3] = [$this->app->config->get('app.default_app'), Str::snake($this->app->config->get('route.default_controller')), $this->app->config->get('route.default_action')];
-        $pattern = ["#^({$bs}){$d1}/{$d2}/{$d3}(\.{$hm}|^\w|\?|$)?#i", "#^({$bs}[\w\.]+)/{$d2}/{$d3}(\.{$hm}|^\w|\?|$)#i", "#^({$bs}[\w\.]+)(/[\w\.]+)/{$d3}(\.{$hm}|^\w|$)#i"];
-        return preg_replace($pattern, ['$1$2', '$1$2', '$1$2$3'], $this->app->route->buildUrl($url, $vars)->suffix($suffix)->domain($domain)->build());
+        $ext = $this->app->config->get('route.url_html_suffix', 'html');
+        $pre = $this->app->route->buildUrl('@')->suffix(false)->domain($domain)->build();
+        $uri = $this->app->route->buildUrl($url, $vars)->suffix($suffix)->domain($domain)->build();
+        // 默认节点配置数据
+        $app = $this->app->config->get('app.default_app');
+        $act = Str::lower($this->app->config->get('route.default_action'));
+        $ctr = Str::snake($this->app->config->get('route.default_controller'));
+        // 替换省略链接路径
+        return preg_replace([
+            "#^({$pre}){$app}/{$ctr}/{$act}(\.{$ext}|^\w|\?|$)?#i",
+            "#^({$pre}[\w\.]+)/{$ctr}/{$act}(\.{$ext}|^\w|\?|$)#i",
+            "#^({$pre}[\w\.]+)(/[\w\.]+)/{$act}(\.{$ext}|^\w|\?|$)#i",
+        ], ['$1$2', '$1$2', '$1$2$3'], $uri);
     }
 
     /**
@@ -155,13 +180,26 @@ class SystemService extends Service
      * @param string $name
      * @param mixed $value
      * @return boolean
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function setData(string $name, $value)
     {
         return $this->save('SystemData', ['name' => $name, 'value' => serialize($value)], 'name');
+    }
+
+    /**
+     * 获取数据库所有数据表
+     * @return array [table, total, count]
+     */
+    public function getTables(): array
+    {
+        $tables = [];
+        foreach ($this->app->db->query("show tables") as $item) {
+            $tables = array_merge($tables, array_values($item));
+        }
+        return [$tables, count($tables), 0];
     }
 
     /**
@@ -173,9 +211,9 @@ class SystemService extends Service
     public function getData(string $name, $default = [])
     {
         try {
-            $value = $this->app->db->name('SystemData')->where(['name' => $name])->value('value', null);
+            $value = $this->app->db->name('SystemData')->where(['name' => $name])->value('value');
             return is_null($value) ? $default : unserialize($value);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return $default;
         }
     }
@@ -215,7 +253,7 @@ class SystemService extends Service
      * @param string|null $file 文件名称
      * @return false|int
      */
-    public function putDebug($data, $new = false, $file = null)
+    public function putDebug($data, bool $new = false, ?string $file = null)
     {
         if (is_null($file)) $file = $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . date('Ymd') . '.log';
         $str = (is_string($data) ? $data : ((is_array($data) || is_object($data)) ? print_r($data, true) : var_export($data, true))) . PHP_EOL;
@@ -247,7 +285,7 @@ class SystemService extends Service
         $this->app->console->call("optimize:schema", ["--connection={$connection}"]);
         foreach (NodeService::instance()->getModules() as $module) {
             $path = $this->app->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR . $module;
-            file_exists($path) && is_dir($path) or mkdir($path, 0755, true);
+            file_exists($path) && is_dir($path) || mkdir($path, 0755, true);
             $this->app->console->call("optimize:route", [$module]);
         }
     }
@@ -258,6 +296,7 @@ class SystemService extends Service
     public function clearRuntime(): void
     {
         $data = $this->getRuntime();
+        $this->app->cache->clear();
         $this->app->console->call('clear', ['--dir']);
         $this->setRuntime($data['mode'], $data['appmap'], $data['domain']);
     }
@@ -284,12 +323,15 @@ class SystemService extends Service
         $data['mode'] = $mode ?: $data['mode'];
         $data['appmap'] = $this->uniqueArray($data['appmap'], $appmap);
         $data['domain'] = $this->uniqueArray($data['domain'], $domain);
+
         // 组装配置文件格式
         $rows[] = "mode = {$data['mode']}";
         foreach ($data['appmap'] as $key => $item) $rows[] = "appmap[{$key}] = {$item}";
         foreach ($data['domain'] as $key => $item) $rows[] = "domain[{$key}] = {$item}";
-        $filename = $this->app->getRootPath() . 'runtime/.env';
-        file_put_contents($filename, "[RUNTIME]\n" . join("\n", $rows));
+
+        // 数据配置保存文件
+        $env = $this->app->getRootPath() . 'runtime/.env';
+        file_put_contents($env, "[RUNTIME]\n" . join("\n", $rows));
         return $this->bindRuntime($data);
     }
 
@@ -301,8 +343,8 @@ class SystemService extends Service
      */
     public function getRuntime(?string $name = null, array $default = [])
     {
-        $filename = $this->app->getRootPath() . 'runtime/.env';
-        if (file_exists($filename)) $this->app->env->load($filename);
+        $env = $this->app->getRootPath() . 'runtime/.env';
+        if (file_exists($env)) $this->app->env->load($env);
         $data = [
             'mode'   => $this->app->env->get('RUNTIME_MODE') ?: 'debug',
             'appmap' => $this->app->env->get('RUNTIME_APPMAP') ?: [],
@@ -327,14 +369,26 @@ class SystemService extends Service
 
     /**
      * 初始化并运行主程序
-     * @param null|\think\App $app
+     * @param null|App $app
      */
-    public function doInit(?\think\App $app = null): void
+    public function doInit(?App $app = null)
     {
         $this->app = $app ?: $this->app;
         $this->app->debug($this->isDebug());
         ($response = $this->app->http->run())->send();
         $this->app->http->end($response);
+    }
+
+    /**
+     * 初始化命令行主程序
+     * @param App|null $app
+     * @throws Exception
+     */
+    public function doConsoleInit(?App $app = null)
+    {
+        $this->app = $app ?: $this->app;
+        $this->app->debug($this->isDebug());
+        $this->app->console->run();
     }
 
     /**
